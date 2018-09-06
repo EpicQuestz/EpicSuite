@@ -5,6 +5,7 @@ main: de.stealwonders.epicsuite.EpicSuite
 authors: [StealWonders]
 description: An essential suite of features for the EpicQuestz server.
 website: www.stealwonders.de
+depend: [PermissionsEx]
 
 commands:
   chatnotification:

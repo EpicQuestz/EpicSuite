@@ -4,6 +4,8 @@ import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
 import de.stealwonders.epicsuite.commands.NotificationCommand;
 import de.stealwonders.epicsuite.commands.PingCommand;
+import de.stealwonders.epicsuite.scoreboard.TablistSorter;
+import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,9 +15,11 @@ public final class EpicSuite extends JavaPlugin {
 
 	private static EpicSuite plugin;
 
+	SettingsFile settingsFile;
 	StorageFile storageFile;
 
 	ChatNotification chatNotification;
+	TablistSorter tablistSorter;
 
 	@Override
 	public void onEnable() {
@@ -23,9 +27,12 @@ public final class EpicSuite extends JavaPlugin {
 
 		plugin = this;
 
+		settingsFile = new SettingsFile(this);
 		storageFile = new StorageFile(this);
 
 		chatNotification = new ChatNotification();
+		tablistSorter = new TablistSorter();
+
 
 		registerListeners();
 		registerCommands();
@@ -42,6 +49,7 @@ public final class EpicSuite extends JavaPlugin {
 	private void registerListeners() {
 		this.getServer().getPluginManager().registerEvents(new ChatHighlight(), this);
 		this.getServer().getPluginManager().registerEvents(chatNotification, this);
+		this.getServer().getPluginManager().registerEvents(tablistSorter, this);
 	}
 
 	private void registerCommands() {
@@ -59,6 +67,10 @@ public final class EpicSuite extends JavaPlugin {
 
 	public static EpicSuite getPlugin() {
 		return plugin;
+	}
+
+	public SettingsFile getSettingsFile() {
+		return settingsFile;
 	}
 
 	public StorageFile getStorageFile() {

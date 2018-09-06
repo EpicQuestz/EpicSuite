@@ -1,6 +1,8 @@
 .gradle/
 .idea/
+build/
 gradle/
+libs/
 EpicSuite.iml
 gradlew
 gradlew.bat
