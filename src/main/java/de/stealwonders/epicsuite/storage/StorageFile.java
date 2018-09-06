@@ -19,14 +19,14 @@ public class StorageFile {
 
 	private static final String SUBSCRIBER_PATH = "notifications.subscribers";
 
-	public StorageFile(EpicSuite plugin) {
+	public StorageFile(final EpicSuite plugin) {
 		file = new File(plugin.getDataFolder(), "storage.yml");
 
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
 			try {
 				file.createNewFile();
-			} catch (IOException exception) {
+			} catch (final IOException exception) {
 				exception.printStackTrace();
 			}
 		}
@@ -35,9 +35,9 @@ public class StorageFile {
 
 		try {
 			configuration.load(file);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
-		} catch (InvalidConfigurationException exception) {
+		} catch (final InvalidConfigurationException exception) {
 			exception.printStackTrace();
 		}
 	}
@@ -49,7 +49,7 @@ public class StorageFile {
 	public void save() {
 		try {
 			configuration.save(file);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -63,8 +63,8 @@ public class StorageFile {
 		return configuration;
 	}
 
-	public void addSubscriber(UUID uuid) {
-		List<String> subscribers = getSubscribers();
+	public void addSubscriber(final UUID uuid) {
+		final List<String> subscribers = getSubscribers();
 		if (subscribers != null) {
 			if (!subscribers.contains(uuid)) {
 				subscribers.add(uuid.toString());
@@ -74,8 +74,8 @@ public class StorageFile {
 		}
 	}
 
-	public void removeSubscriber(UUID uuid) {
-		List<String> subscribers = getSubscribers();
+	public void removeSubscriber(final UUID uuid) {
+		final List<String> subscribers = getSubscribers();
 		if (subscribers != null) {
 			subscribers.removeAll(Collections.singleton(uuid.toString()));
 			getConfiguration().set(SUBSCRIBER_PATH, subscribers);
@@ -85,7 +85,7 @@ public class StorageFile {
 
 	public List<String> getSubscribers() {
 		if (getConfiguration().isSet(SUBSCRIBER_PATH)) {
-			List<String> subscribers = getConfiguration().getStringList(SUBSCRIBER_PATH);
+			final List<String> subscribers = getConfiguration().getStringList(SUBSCRIBER_PATH);
 			return subscribers;
 		}
 		return null;

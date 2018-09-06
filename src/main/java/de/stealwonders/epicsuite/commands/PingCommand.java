@@ -10,17 +10,17 @@ import java.lang.reflect.InvocationTargetException;
 public class PingCommand implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
 
 		if (sender instanceof Player) {
 
-			Player player = (Player) sender;
+			final Player player = (Player) sender;
 
 			try {
-				Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
-				int ping = (int) entityPlayer.getClass().getField("ping").get(entityPlayer);
+				final Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
+				final int ping = (int) entityPlayer.getClass().getField("ping").get(entityPlayer);
 				player.sendMessage("§dYour ping is " + ping + "ms");
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException exception) {
+			} catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException exception) {
 				player.sendMessage("§cTheir was an error retrieving your ping. Please contact a server administrator.");
 				exception.printStackTrace();
 			}

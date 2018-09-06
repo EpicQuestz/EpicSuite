@@ -51,7 +51,7 @@ public final class EpicSuite extends JavaPlugin {
 
 	private void fetchNotficationSubscribers() {
 		if (getStorageFile().getSubscribers() != null) {
-			for (String string : getStorageFile().getSubscribers()) {
+			for (final String string : getStorageFile().getSubscribers()) {
 				chatNotification.addSubscriber(UUID.fromString(string));
 			}
 		}

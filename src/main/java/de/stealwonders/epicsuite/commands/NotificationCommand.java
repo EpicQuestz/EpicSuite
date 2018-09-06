@@ -10,12 +10,12 @@ import org.bukkit.entity.Player;
 public class NotificationCommand implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
 
 		if (sender instanceof Player) {
-			Player player =  (Player) sender;
+			final Player player =  (Player) sender;
 
-			ChatNotification chatNotifier = EpicSuite.getPlugin().getChatNotifier();
+			final ChatNotification chatNotifier = EpicSuite.getPlugin().getChatNotifier();
 
 			if (chatNotifier.isSubscriber(player.getUniqueId())) {
 				chatNotifier.removeSubscriber(player.getUniqueId());

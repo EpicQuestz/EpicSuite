@@ -18,9 +18,9 @@ public class ChatNotification implements Listener {
 	private ArrayList<UUID> subscribers = new ArrayList<>();
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onChat(AsyncPlayerChatEvent event) {
+	public void onChat(final AsyncPlayerChatEvent event) {
 
-		for (Player player : Bukkit.getOnlinePlayers()) {
+		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (event.getPlayer() != player) {
 				if (event.getMessage().toLowerCase().contains(player.getName().toLowerCase())) {
 					if (isSubscriber(player.getUniqueId())) {
@@ -32,23 +32,23 @@ public class ChatNotification implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
+	public void onJoin(final PlayerJoinEvent event) {
 		if (!event.getPlayer().hasPlayedBefore()) {
 			addSubscriber(event.getPlayer().getUniqueId());
 		}
 	}
 
-	public void addSubscriber(UUID uuid) {
+	public void addSubscriber(final UUID uuid) {
 		subscribers.add(uuid);
 		EpicSuite.getPlugin().getStorageFile().addSubscriber(uuid);
 	}
 
-	public void removeSubscriber(UUID uuid) {
+	public void removeSubscriber(final UUID uuid) {
 		subscribers.remove(uuid);
 		EpicSuite.getPlugin().getStorageFile().removeSubscriber(uuid);
 	}
 
-	public boolean isSubscriber(UUID uuid) {
+	public boolean isSubscriber(final UUID uuid) {
 		return subscribers.contains(uuid);
 	}
 
