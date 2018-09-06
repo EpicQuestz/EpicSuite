@@ -1,0 +1,14 @@
+name: EpicSuite
+version: ${project.version}
+api-version: 1.13
+main: de.stealwonders.epicsuite.EpicSuite
+authors: [StealWonders]
+description: An essential suite of features for the EpicQuestz server.
+website: www.stealwonders.de
+
+commands:
+  chatnotification:
+    description: Toggles the chat notifier on / off
+    aliases: [notification, chatping]
+  ping:
+    description: Displays your current server ping

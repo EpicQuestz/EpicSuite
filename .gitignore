@@ -1,0 +1,6 @@
+.gradle/
+.idea/
+gradle/
+EpicSuite.iml
+gradlew
+gradlew.bat
