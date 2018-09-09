@@ -2,6 +2,7 @@ package de.stealwonders.epicsuite;
 
 import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
+import de.stealwonders.epicsuite.commands.ChatClearCommand;
 import de.stealwonders.epicsuite.commands.NotificationCommand;
 import de.stealwonders.epicsuite.commands.PingCommand;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
@@ -53,6 +54,7 @@ public final class EpicSuite extends JavaPlugin {
 	}
 
 	private void registerCommands() {
+		this.getCommand("clearchat").setExecutor(new ChatClearCommand());
 		this.getCommand("chatnotification").setExecutor(new NotificationCommand());
 		this.getCommand("ping").setExecutor(new PingCommand());
 	}

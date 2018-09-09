@@ -2,6 +2,7 @@ package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,6 +42,8 @@ public class TablistSorter implements Listener {
 			team = scoreboard.registerNewTeam(tablistTeam.getPriority() + "_" + tablistTeam.getPermissionGroup().getName());
 			team.setColor(tablistTeam.getColor());
 			teams.put(tablistTeam, team);
+
+			EpicSuite.getPlugin().getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getPermissionGroup().getName() + ChatColor.RESET + " ...");
 		}
 	}
 
@@ -51,7 +54,7 @@ public class TablistSorter implements Listener {
 			for (final TablistTeam tablistTeam : teams.keySet()) {
 				if (permissionUser.inGroup(tablistTeam.getPermissionGroup())) {
 					if (team != null) {
-						if (team.getPriority() < tablistTeam.getPriority()) {
+						if (team.getPriority() > tablistTeam.getPriority()) {
 							team = tablistTeam;
 						}
 					} else {

@@ -13,3 +13,6 @@ commands:
     aliases: [notification, chatping]
   ping:
     description: Displays your current server ping
+  clearchat:
+    description: Clears the server chat
+    permission: epicsuite.clearchat
