@@ -15,8 +15,6 @@ import java.util.UUID;
 
 public class ChatNotification implements Listener {
 
-	private ArrayList<UUID> subscribers = new ArrayList<>();
-
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChat(final AsyncPlayerChatEvent event) {
 
@@ -39,17 +37,15 @@ public class ChatNotification implements Listener {
 	}
 
 	public void addSubscriber(final UUID uuid) {
-		subscribers.add(uuid);
 		EpicSuite.getPlugin().getStorageFile().addSubscriber(uuid);
 	}
 
 	public void removeSubscriber(final UUID uuid) {
-		subscribers.remove(uuid);
 		EpicSuite.getPlugin().getStorageFile().removeSubscriber(uuid);
 	}
 
 	public boolean isSubscriber(final UUID uuid) {
-		return subscribers.contains(uuid);
+		return EpicSuite.getPlugin().getStorageFile().isSubscriber(uuid);
 	}
 
 }

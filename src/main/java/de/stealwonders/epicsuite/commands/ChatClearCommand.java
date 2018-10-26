@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 public class ChatClearCommand implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
 
 		if (sender.hasPermission("epicsuite.clearchat")) {
 			for (int i = 0; i < 100; i++) {

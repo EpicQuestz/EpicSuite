@@ -47,6 +47,7 @@ public class TablistSorter implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void addPlayer(final Player player) {
 		if (teams != null) {
 			final PermissionUser permissionUser = PermissionsEx.getUser(player);
@@ -68,6 +69,7 @@ public class TablistSorter implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void removePlayer(final Player player) {
 		if (teams != null) {
 			for (final Team team : teams.values()) {

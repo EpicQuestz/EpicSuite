@@ -1,21 +1,25 @@
 package de.stealwonders.epicsuite.storage;
 
+import com.google.common.collect.ImmutableList;
 import de.stealwonders.epicsuite.EpicSuite;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class StorageFile {
 
 	private File file;
 	private FileConfiguration configuration;
+
+	private ArrayList<UUID> subscribers = new ArrayList<>();
 
 	private static final String SUBSCRIBER_PATH = "notifications.subscribers";
 
@@ -42,10 +46,6 @@ public class StorageFile {
 		}
 	}
 
-	public File getFile() {
-		return file;
-	}
-
 	public void save() {
 		try {
 			configuration.save(file);
@@ -54,39 +54,31 @@ public class StorageFile {
 		}
 	}
 
-	public void delete() {
-		file.delete();
-		configuration = null;
-	}
-
 	public FileConfiguration getConfiguration() {
 		return configuration;
 	}
 
+	public boolean isSubscriber(final UUID uuid) {
+		return subscribers.contains(uuid);
+	}
+
 	public void addSubscriber(final UUID uuid) {
-		final List<String> subscribers = getSubscribers();
-		if (subscribers != null) {
-			if (!subscribers.contains(uuid)) {
-				subscribers.add(uuid.toString());
-				getConfiguration().set(SUBSCRIBER_PATH, subscribers);
-				Bukkit.getScheduler().runTaskAsynchronously(EpicSuite.getPlugin(), () -> save());
-			}
-		}
+		subscribers.add(uuid);
+		final List<String> stringList = subscribers.stream().map(UUID::toString).collect(Collectors.toList());
+		getConfiguration().set(SUBSCRIBER_PATH, stringList);
+		save();
 	}
 
 	public void removeSubscriber(final UUID uuid) {
-		final List<String> subscribers = getSubscribers();
-		if (subscribers != null) {
-			subscribers.removeAll(Collections.singleton(uuid.toString()));
-			getConfiguration().set(SUBSCRIBER_PATH, subscribers);
-			Bukkit.getScheduler().runTaskAsynchronously(EpicSuite.getPlugin(), () -> save());
-		}
+		subscribers.removeAll(Collections.singleton(uuid.toString()));
+		getConfiguration().set(SUBSCRIBER_PATH, subscribers);
+		save();
 	}
 
-	public List<String> getSubscribers() {
+	public ImmutableList<String> getSubscribers() {
 		if (getConfiguration().isSet(SUBSCRIBER_PATH)) {
 			final List<String> subscribers = getConfiguration().getStringList(SUBSCRIBER_PATH);
-			return subscribers;
+			return ImmutableList.copyOf(subscribers);
 		}
 		return null;
 	}
