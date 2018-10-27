@@ -24,7 +24,7 @@ public class ChatHighlight implements Listener {
 		for (final Player player : Bukkit.getOnlinePlayers()) {
 			if (message.toLowerCase().contains(player.getName().toLowerCase())) {
 
-				final String suffix = getGroup(player).getSuffix();
+				final String suffix = getGroup(event.getPlayer()).getSuffix();
 				final String colorString = suffix.substring(suffix.length() - 1);
 				final ChatColor color = ChatColor.getByChar(colorString);
 
