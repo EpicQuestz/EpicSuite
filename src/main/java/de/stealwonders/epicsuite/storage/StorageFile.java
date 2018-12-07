@@ -8,10 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StorageFile {
@@ -19,7 +16,7 @@ public class StorageFile {
 	private File file;
 	private FileConfiguration configuration;
 
-	private ArrayList<UUID> subscribers = new ArrayList<>();
+	private HashSet<UUID> subscribers = new HashSet<>();
 
 	private static final String SUBSCRIBER_PATH = "notifications.subscribers";
 
@@ -70,8 +67,9 @@ public class StorageFile {
 	}
 
 	public void removeSubscriber(final UUID uuid) {
-		subscribers.removeAll(Collections.singleton(uuid.toString()));
-		getConfiguration().set(SUBSCRIBER_PATH, subscribers);
+		subscribers.remove(uuid);
+		final List<String> stringList = subscribers.stream().map(UUID::toString).collect(Collectors.toList());
+		getConfiguration().set(SUBSCRIBER_PATH, stringList);
 		save();
 	}
 
