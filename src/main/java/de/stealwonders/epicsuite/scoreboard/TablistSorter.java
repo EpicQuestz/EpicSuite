@@ -12,9 +12,11 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
+import ru.tehkode.permissions.events.PermissionEntityEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class TablistSorter implements Listener {
 
@@ -80,6 +82,11 @@ public class TablistSorter implements Listener {
 		}
 	}
 
+	private void updatePlayer(final Player player) {
+		removePlayer(player);
+		addPlayer(player);
+	}
+
 	public HashMap<TablistTeam, Team> getTeams() {
 		return teams;
 	}
@@ -92,5 +99,15 @@ public class TablistSorter implements Listener {
 	@EventHandler
 	public void onQuit(final PlayerQuitEvent event) {
 		removePlayer(event.getPlayer());
+	}
+
+	@EventHandler
+	public void onRankUpdate(final PermissionEntityEvent event) {
+		if (event.getAction() == PermissionEntityEvent.Action.RANK_CHANGED) {
+			final Player player = Bukkit.getPlayer(UUID.fromString(event.getEntityIdentifier()));
+			if (player != null) {
+				updatePlayer(player);
+			}
+		}
 	}
 }
