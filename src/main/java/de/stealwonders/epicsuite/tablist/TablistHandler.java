@@ -12,7 +12,7 @@ public class TablistHandler implements Listener {
 	public void onJoin(final PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
 
-		final TextComponent header = new TextComponent("\n §2Epic§4Quest\n§7Welcome to the server" + player.getName() + ".\n");
+		final TextComponent header = new TextComponent("\n §2Epic§4Quest\n§7Welcome to the server " + player.getName() + ".\n");
 		final TextComponent footer = new TextComponent("\n   §7Visit our website at www.epicquestz.com   \n ");
 
 		player.setPlayerListHeaderFooter(header, footer);
