@@ -8,6 +8,7 @@ import de.stealwonders.epicsuite.commands.PingCommand;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
+import de.stealwonders.epicsuite.tablist.TablistHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -51,6 +52,7 @@ public final class EpicSuite extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new ChatHighlight(), this);
 		this.getServer().getPluginManager().registerEvents(chatNotification, this);
 		this.getServer().getPluginManager().registerEvents(tablistSorter, this);
+		this.getServer().getPluginManager().registerEvents(new TablistHandler(), this);
 	}
 
 	private void registerCommands() {
