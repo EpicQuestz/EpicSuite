@@ -5,6 +5,7 @@ import de.stealwonders.epicsuite.chat.ChatNotification;
 import de.stealwonders.epicsuite.commands.ChatClearCommand;
 import de.stealwonders.epicsuite.commands.NotificationCommand;
 import de.stealwonders.epicsuite.commands.PingCommand;
+import de.stealwonders.epicsuite.commands.ShrugCommand;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
@@ -59,6 +60,7 @@ public final class EpicSuite extends JavaPlugin {
 		this.getCommand("clearchat").setExecutor(new ChatClearCommand());
 		this.getCommand("chatnotification").setExecutor(new NotificationCommand());
 		this.getCommand("ping").setExecutor(new PingCommand());
+		this.getCommand("shrug").setExecutor(new ShrugCommand());
 	}
 
 	private void fetchNotficationSubscribers() {

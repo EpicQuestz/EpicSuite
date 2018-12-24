@@ -16,3 +16,5 @@ commands:
   clearchat:
     description: Clears the server chat
     permission: epicsuite.clearchat
+  shrug:
+    description: Sends a schrug message
