@@ -10,6 +10,10 @@ import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
 import de.stealwonders.epicsuite.tablist.TablistHandler;
+import me.lucko.luckperms.api.LuckPermsApi;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -24,6 +28,9 @@ public final class EpicSuite extends JavaPlugin {
 	ChatNotification chatNotification;
 	TablistSorter tablistSorter;
 
+	PermissionHandler permissionHandler;
+	LuckPermsApi luckPermsApi;
+
 	@Override
 	public void onEnable() {
 		// Plugin startup logic
@@ -34,8 +41,25 @@ public final class EpicSuite extends JavaPlugin {
 		storageFile = new StorageFile(this);
 
 		chatNotification = new ChatNotification();
-		tablistSorter = new TablistSorter();
 
+		Plugin permissionsEx = getServer().getPluginManager().getPlugin("PermissionsEx");
+		Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
+
+		if (luckPerms != null) {
+			permissionHandler = PermissionHandler.LUCKPERMS;
+			RegisteredServiceProvider<LuckPermsApi> provider = Bukkit.getServicesManager().getRegistration(LuckPermsApi.class);
+			if (provider != null) {
+				luckPermsApi = provider.getProvider();
+				tablistSorter = new TablistSorter(luckPermsApi);
+			}
+		} else if (permissionsEx != null) {
+			permissionHandler = PermissionHandler.PERMISSIONSEX;
+			tablistSorter = new TablistSorter();
+		} else {
+			Bukkit.getLogger().severe("No permission handler found (PermissionsEx or LuckPerms)\nDisabling plugin.");
+			this.getServer().getPluginManager().disablePlugin(this);
+		}
+		this.getLogger().info("Setting PermissionHandler to: " + permissionHandler);
 
 		registerListeners();
 		registerCommands();
@@ -85,5 +109,13 @@ public final class EpicSuite extends JavaPlugin {
 
 	public ChatNotification getChatNotifier() {
 		return chatNotification;
+	}
+
+	public LuckPermsApi getLuckPermsApi() {
+		return luckPermsApi;
+	}
+
+	public PermissionHandler getPermissionHandler() {
+		return permissionHandler;
 	}
 }

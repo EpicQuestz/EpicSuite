@@ -1,6 +1,8 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
+import de.stealwonders.epicsuite.scoreboard.impl.LuckPermsHandler;
+import me.lucko.luckperms.api.LuckPermsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,8 +12,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 import ru.tehkode.permissions.events.PermissionEntityEvent;
 
 import java.util.ArrayList;
@@ -32,30 +32,40 @@ public class TablistSorter implements Listener {
 		}
 	}
 
+	public TablistSorter(LuckPermsApi luckPermsApi) {
+		scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+		teams = new HashMap<>();
+
+		if (EpicSuite.getPlugin().getSettingsFile().getSortableTeams() != null) {
+			init(EpicSuite.getPlugin().getSettingsFile().getSortableTeams());
+		}
+
+		new LuckPermsHandler(luckPermsApi, this);
+	}
+
 	private void init(final ArrayList<TablistTeam> tablistTeams) {
 		for (final TablistTeam tablistTeam : tablistTeams) {
-			final String name = tablistTeam.getPriority() + "_" + tablistTeam.getPermissionGroup().getName();
+			final String name = tablistTeam.getPriority() + "_" + tablistTeam.getName();
 
 			Team team = scoreboard.getTeam(name);
 			if (team != null) {
 				team.unregister();
 			}
 
-			team = scoreboard.registerNewTeam(tablistTeam.getPriority() + "_" + tablistTeam.getPermissionGroup().getName());
+			team = scoreboard.registerNewTeam(tablistTeam.getPriority() + "_" + tablistTeam.getName());
 			team.setColor(tablistTeam.getColor());
 			teams.put(tablistTeam, team);
 
-			EpicSuite.getPlugin().getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getPermissionGroup().getName() + ChatColor.RESET + " ...");
+			EpicSuite.getPlugin().getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getName() + ChatColor.RESET + " ...");
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	private void addPlayer(final Player player) {
 		if (teams != null) {
-			final PermissionUser permissionUser = PermissionsEx.getUser(player);
 			TablistTeam team = null;
 			for (final TablistTeam tablistTeam : teams.keySet()) {
-				if (permissionUser.inGroup(tablistTeam.getPermissionGroup())) {
+				if (tablistTeam.isInGroup(player)) {
 					if (team != null) {
 						if (team.getPriority() > tablistTeam.getPriority()) {
 							team = tablistTeam;
@@ -82,7 +92,7 @@ public class TablistSorter implements Listener {
 		}
 	}
 
-	private void updatePlayer(final Player player) {
+	public void updatePlayer(final Player player) {
 		removePlayer(player);
 		addPlayer(player);
 	}
