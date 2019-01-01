@@ -1,8 +1,14 @@
 package de.stealwonders.epicsuite.scoreboard;
 
+import de.stealwonders.epicsuite.EpicSuite;
+import de.stealwonders.epicsuite.PermissionHandler;
 import me.lucko.luckperms.LuckPerms;
+import me.lucko.luckperms.api.Contexts;
 import me.lucko.luckperms.api.Group;
 import me.lucko.luckperms.api.LuckPermsApi;
+import me.lucko.luckperms.api.Node;
+import me.lucko.luckperms.api.caching.MetaData;
+import me.lucko.luckperms.api.context.ImmutableContextSet;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import ru.tehkode.permissions.PermissionGroup;
@@ -34,26 +40,33 @@ public class TablistTeam<T> {
 	}
 
 	public String getName() {
-		if (getT() instanceof PermissionGroup) {
-			PermissionGroup permissionGroup = (PermissionGroup) getT();
-			return permissionGroup.getName();
-		} else if (getT() instanceof Group) {
-			Group group = (Group) getT();
-			return group.getName();
+		if (EpicSuite.getPlugin().getPermissionHandler() == PermissionHandler.PERMISSIONSEX) {
+			if (getT() instanceof PermissionGroup) {
+				PermissionGroup permissionGroup = (PermissionGroup) getT();
+				return permissionGroup.getName();
+			}
+		} else if (EpicSuite.getPlugin().getPermissionHandler() == PermissionHandler.LUCKPERMS) {
+			if (getT() instanceof Group) {
+				Group group = (Group) getT();
+				return group.getName();
+			}
 		}
 		return null;
 	}
 
 	public boolean isInGroup(Player player) {
-		if (getT() instanceof PermissionGroup) {
-			PermissionGroup permissionGroup = (PermissionGroup) getT();
-			PermissionUser permissionUser = PermissionsEx.getUser(player);
-			return permissionUser.inGroup(permissionGroup);
-		} else if (getT() instanceof Group) {
-			Group group = (Group) getT();
-			return  LuckPerms.getApi().getUser(player.getUniqueId()).inheritsGroup(group);
+		if (EpicSuite.getPlugin().getPermissionHandler() == PermissionHandler.PERMISSIONSEX) {
+			if (getT() instanceof PermissionGroup) {
+				PermissionGroup permissionGroup = (PermissionGroup) getT();
+				PermissionUser permissionUser = PermissionsEx.getUser(player);
+				return permissionUser.inGroup(permissionGroup);
+			}
+		} else if (EpicSuite.getPlugin().getPermissionHandler() == PermissionHandler.LUCKPERMS) {
+			if (getT() instanceof Group) {
+				Group group = (Group) getT();
+				return LuckPerms.getApi().getUser(player.getUniqueId()).inheritsGroup(group);
+			}
 		}
 		return false;
 	}
-
 }
