@@ -8,13 +8,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class TablistHandler implements Listener {
 
-	@EventHandler
-	public void onJoin(final PlayerJoinEvent event) {
-		final Player player = event.getPlayer();
+    @EventHandler
+    public void onJoin(final PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
 
-		final TextComponent header = new TextComponent("\n §2Epic§4Questz\n§7Welcome to the server " + player.getName() + ".\n");
-		final TextComponent footer = new TextComponent("\n   §7Visit our website at www.epicquestz.com   \n ");
+        final TextComponent header = new TextComponent("\n §2Epic§4Questz\n§7Welcome to the server " + player.getName() + ".\n");
+        final TextComponent footer = new TextComponent("\n   §7Visit our website at www.epicquestz.com   \n ");
 
-		player.setPlayerListHeaderFooter(header, footer);
-	}
+        player.setPlayerListHeaderFooter(header, footer);
+    }
 }

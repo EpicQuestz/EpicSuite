@@ -9,26 +9,26 @@ import org.bukkit.entity.Player;
 
 public class NotificationCommand implements CommandExecutor {
 
-	@Override
-	public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    @Override
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
 
-		if (sender instanceof Player) {
-			final Player player =  (Player) sender;
+        if (sender instanceof Player) {
+            final Player player =  (Player) sender;
 
-			final ChatNotification chatNotifier = EpicSuite.getPlugin().getChatNotifier();
+            final ChatNotification chatNotifier = EpicSuite.getPlugin().getChatNotifier();
 
-			if (chatNotifier.isSubscriber(player.getUniqueId())) {
-				chatNotifier.removeSubscriber(player.getUniqueId());
-				player.sendMessage("§dDisabled chat notifications");
-			} else {
-				chatNotifier.addSubscriber(player.getUniqueId());
-				player.sendMessage("§dEnabled chat notifications");
-			}
+            if (chatNotifier.isSubscriber(player.getUniqueId())) {
+                chatNotifier.removeSubscriber(player.getUniqueId());
+                player.sendMessage("§dDisabled chat notifications");
+            } else {
+                chatNotifier.addSubscriber(player.getUniqueId());
+                player.sendMessage("§dEnabled chat notifications");
+            }
 
-		} else {
-			sender.sendMessage("You must be a player to execute this command.");
-		}
+        } else {
+            sender.sendMessage("You must be a player to execute this command.");
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

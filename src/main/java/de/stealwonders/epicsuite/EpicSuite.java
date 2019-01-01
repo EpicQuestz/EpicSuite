@@ -20,102 +20,102 @@ import java.util.UUID;
 
 public final class EpicSuite extends JavaPlugin {
 
-	private static EpicSuite plugin;
+    private static EpicSuite plugin;
 
-	SettingsFile settingsFile;
-	StorageFile storageFile;
+    SettingsFile settingsFile;
+    StorageFile storageFile;
 
-	ChatNotification chatNotification;
-	TablistSorter tablistSorter;
+    ChatNotification chatNotification;
+    TablistSorter tablistSorter;
 
-	PermissionHandler permissionHandler;
-	LuckPermsApi luckPermsApi;
+    PermissionHandler permissionHandler;
+    LuckPermsApi luckPermsApi;
 
-	@Override
-	public void onEnable() {
-		// Plugin startup logic
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
 
-		plugin = this;
+        plugin = this;
 
-		settingsFile = new SettingsFile(this);
-		storageFile = new StorageFile(this);
+        settingsFile = new SettingsFile(this);
+        storageFile = new StorageFile(this);
 
-		chatNotification = new ChatNotification();
+        chatNotification = new ChatNotification();
 
-		Plugin permissionsEx = getServer().getPluginManager().getPlugin("PermissionsEx");
-		Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
+        final Plugin permissionsEx = getServer().getPluginManager().getPlugin("PermissionsEx");
+        final Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
 
-		if (luckPerms != null) {
-			permissionHandler = PermissionHandler.LUCKPERMS;
-			RegisteredServiceProvider<LuckPermsApi> provider = Bukkit.getServicesManager().getRegistration(LuckPermsApi.class);
-			if (provider != null) {
-				luckPermsApi = provider.getProvider();
-				tablistSorter = new TablistSorter(this, luckPermsApi);
-			}
-		} else if (permissionsEx != null) {
-			permissionHandler = PermissionHandler.PERMISSIONSEX;
-			tablistSorter = new TablistSorter(this);
-		} else {
-			Bukkit.getLogger().severe("No permission handler found (PermissionsEx or LuckPerms)\nDisabling plugin.");
-			this.getServer().getPluginManager().disablePlugin(this);
-		}
-		this.getLogger().info("Setting PermissionHandler to: " + permissionHandler);
+        if (luckPerms != null) {
+            permissionHandler = PermissionHandler.LUCKPERMS;
+            final RegisteredServiceProvider<LuckPermsApi> provider = Bukkit.getServicesManager().getRegistration(LuckPermsApi.class);
+            if (provider != null) {
+                luckPermsApi = provider.getProvider();
+                tablistSorter = new TablistSorter(this, luckPermsApi);
+            }
+        } else if (permissionsEx != null) {
+            permissionHandler = PermissionHandler.PERMISSIONSEX;
+            tablistSorter = new TablistSorter(this);
+        } else {
+            Bukkit.getLogger().severe("No permission handler found (PermissionsEx or LuckPerms)\nDisabling plugin.");
+            this.getServer().getPluginManager().disablePlugin(this);
+        }
+        this.getLogger().info("Setting PermissionHandler to: " + permissionHandler);
 
-		registerListeners();
-		registerCommands();
+        registerListeners();
+        registerCommands();
 
-		fetchNotficationSubscribers();
+        fetchNotficationSubscribers();
 
-	}
+    }
 
-	@Override
-	public void onDisable() {
-		// Plugin shutdown logic
-	}
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+    }
 
-	private void registerListeners() {
-		this.getServer().getPluginManager().registerEvents(new ChatHighlight(), this);
-		this.getServer().getPluginManager().registerEvents(chatNotification, this);
-		this.getServer().getPluginManager().registerEvents(tablistSorter, this);
-		this.getServer().getPluginManager().registerEvents(new TablistHandler(), this);
-	}
+    private void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(new ChatHighlight(), this);
+        this.getServer().getPluginManager().registerEvents(chatNotification, this);
+        this.getServer().getPluginManager().registerEvents(tablistSorter, this);
+        this.getServer().getPluginManager().registerEvents(new TablistHandler(), this);
+    }
 
-	private void registerCommands() {
-		this.getCommand("clearchat").setExecutor(new ChatClearCommand());
-		this.getCommand("chatnotification").setExecutor(new NotificationCommand());
-		this.getCommand("ping").setExecutor(new PingCommand());
-		this.getCommand("shrug").setExecutor(new ShrugCommand());
-	}
+    private void registerCommands() {
+        this.getCommand("clearchat").setExecutor(new ChatClearCommand());
+        this.getCommand("chatnotification").setExecutor(new NotificationCommand());
+        this.getCommand("ping").setExecutor(new PingCommand());
+        this.getCommand("shrug").setExecutor(new ShrugCommand());
+    }
 
-	private void fetchNotficationSubscribers() {
-		if (getStorageFile().getSubscribers() != null) {
-			for (final String string : getStorageFile().getSubscribers()) {
-				chatNotification.addSubscriber(UUID.fromString(string));
-			}
-		}
-	}
+    private void fetchNotficationSubscribers() {
+        if (getStorageFile().getSubscribers() != null) {
+            for (final String string : getStorageFile().getSubscribers()) {
+                chatNotification.addSubscriber(UUID.fromString(string));
+            }
+        }
+    }
 
-	public static EpicSuite getPlugin() {
-		return plugin;
-	}
+    public static EpicSuite getPlugin() {
+        return plugin;
+    }
 
-	public SettingsFile getSettingsFile() {
-		return settingsFile;
-	}
+    public SettingsFile getSettingsFile() {
+        return settingsFile;
+    }
 
-	public StorageFile getStorageFile() {
-		return storageFile;
-	}
+    public StorageFile getStorageFile() {
+        return storageFile;
+    }
 
-	public ChatNotification getChatNotifier() {
-		return chatNotification;
-	}
+    public ChatNotification getChatNotifier() {
+        return chatNotification;
+    }
 
-	public LuckPermsApi getLuckPermsApi() {
-		return luckPermsApi;
-	}
+    public LuckPermsApi getLuckPermsApi() {
+        return luckPermsApi;
+    }
 
-	public PermissionHandler getPermissionHandler() {
-		return permissionHandler;
-	}
+    public PermissionHandler getPermissionHandler() {
+        return permissionHandler;
+    }
 }

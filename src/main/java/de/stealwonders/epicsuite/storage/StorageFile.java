@@ -13,71 +13,71 @@ import java.util.stream.Collectors;
 
 public class StorageFile {
 
-	private File file;
-	private FileConfiguration configuration;
+    private File file;
+    private FileConfiguration configuration;
 
-	private HashSet<UUID> subscribers = new HashSet<>();
+    private HashSet<UUID> subscribers = new HashSet<>();
 
-	private static final String SUBSCRIBER_PATH = "notifications.subscribers";
+    private static final String SUBSCRIBER_PATH = "notifications.subscribers";
 
-	public StorageFile(final EpicSuite plugin) {
-		file = new File(plugin.getDataFolder(), "storage.yml");
+    public StorageFile(final EpicSuite plugin) {
+        file = new File(plugin.getDataFolder(), "storage.yml");
 
-		if (!file.exists()) {
-			file.getParentFile().mkdirs();
-			try {
-				file.createNewFile();
-			} catch (final IOException exception) {
-				exception.printStackTrace();
-			}
-		}
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            try {
+                file.createNewFile();
+            } catch (final IOException exception) {
+                exception.printStackTrace();
+            }
+        }
 
-		configuration = new YamlConfiguration();
+        configuration = new YamlConfiguration();
 
-		try {
-			configuration.load(file);
-		} catch (final IOException e) {
-			e.printStackTrace();
-		} catch (final InvalidConfigurationException exception) {
-			exception.printStackTrace();
-		}
-	}
+        try {
+            configuration.load(file);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        } catch (final InvalidConfigurationException exception) {
+            exception.printStackTrace();
+        }
+    }
 
-	public void save() {
-		try {
-			configuration.save(file);
-		} catch (final IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public void save() {
+        try {
+            configuration.save(file);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public FileConfiguration getConfiguration() {
-		return configuration;
-	}
+    public FileConfiguration getConfiguration() {
+        return configuration;
+    }
 
-	public boolean isSubscriber(final UUID uuid) {
-		return subscribers.contains(uuid);
-	}
+    public boolean isSubscriber(final UUID uuid) {
+        return subscribers.contains(uuid);
+    }
 
-	public void addSubscriber(final UUID uuid) {
-		subscribers.add(uuid);
-		final List<String> stringList = subscribers.stream().map(UUID::toString).collect(Collectors.toList());
-		getConfiguration().set(SUBSCRIBER_PATH, stringList);
-		save();
-	}
+    public void addSubscriber(final UUID uuid) {
+        subscribers.add(uuid);
+        final List<String> stringList = subscribers.stream().map(UUID::toString).collect(Collectors.toList());
+        getConfiguration().set(SUBSCRIBER_PATH, stringList);
+        save();
+    }
 
-	public void removeSubscriber(final UUID uuid) {
-		subscribers.remove(uuid);
-		final List<String> stringList = subscribers.stream().map(UUID::toString).collect(Collectors.toList());
-		getConfiguration().set(SUBSCRIBER_PATH, stringList);
-		save();
-	}
+    public void removeSubscriber(final UUID uuid) {
+        subscribers.remove(uuid);
+        final List<String> stringList = subscribers.stream().map(UUID::toString).collect(Collectors.toList());
+        getConfiguration().set(SUBSCRIBER_PATH, stringList);
+        save();
+    }
 
-	public ImmutableList<String> getSubscribers() {
-		if (getConfiguration().isSet(SUBSCRIBER_PATH)) {
-			final List<String> subscribers = getConfiguration().getStringList(SUBSCRIBER_PATH);
-			return ImmutableList.copyOf(subscribers);
-		}
-		return null;
-	}
+    public ImmutableList<String> getSubscribers() {
+        if (getConfiguration().isSet(SUBSCRIBER_PATH)) {
+            final List<String> subscribers = getConfiguration().getStringList(SUBSCRIBER_PATH);
+            return ImmutableList.copyOf(subscribers);
+        }
+        return null;
+    }
 }

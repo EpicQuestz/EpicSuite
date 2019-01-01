@@ -14,7 +14,7 @@ public class PermissionsExHandler implements Listener {
 
     TablistSorter tablistSorter;
 
-    public PermissionsExHandler(EpicSuite plugin, TablistSorter tablistSorter) {
+    public PermissionsExHandler(final EpicSuite plugin, final TablistSorter tablistSorter) {
         this.tablistSorter = tablistSorter;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
