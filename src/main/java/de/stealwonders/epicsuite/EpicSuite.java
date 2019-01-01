@@ -50,11 +50,11 @@ public final class EpicSuite extends JavaPlugin {
 			RegisteredServiceProvider<LuckPermsApi> provider = Bukkit.getServicesManager().getRegistration(LuckPermsApi.class);
 			if (provider != null) {
 				luckPermsApi = provider.getProvider();
-				tablistSorter = new TablistSorter(luckPermsApi);
+				tablistSorter = new TablistSorter(this, luckPermsApi);
 			}
 		} else if (permissionsEx != null) {
 			permissionHandler = PermissionHandler.PERMISSIONSEX;
-			tablistSorter = new TablistSorter();
+			tablistSorter = new TablistSorter(this);
 		} else {
 			Bukkit.getLogger().severe("No permission handler found (PermissionsEx or LuckPerms)\nDisabling plugin.");
 			this.getServer().getPluginManager().disablePlugin(this);

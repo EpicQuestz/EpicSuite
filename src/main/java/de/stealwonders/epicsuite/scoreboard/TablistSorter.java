@@ -1,7 +1,9 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
+import de.stealwonders.epicsuite.PermissionHandler;
 import de.stealwonders.epicsuite.scoreboard.impl.LuckPermsHandler;
+import de.stealwonders.epicsuite.scoreboard.impl.PermissionsExHandler;
 import me.lucko.luckperms.api.LuckPermsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,32 +14,37 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import ru.tehkode.permissions.events.PermissionEntityEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class TablistSorter implements Listener {
 
+	private EpicSuite plugin;
 	private Scoreboard scoreboard;
 	private HashMap<TablistTeam, Team> teams;
 
-	public TablistSorter() {
+	public TablistSorter(EpicSuite plugin) {
+		this.plugin = plugin;
 		scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 		teams = new HashMap<>();
 
-		if (EpicSuite.getPlugin().getSettingsFile().getSortableTeams() != null) {
-			init(EpicSuite.getPlugin().getSettingsFile().getSortableTeams());
+		if (plugin.getSettingsFile().getSortableTeams() != null) {
+			init(plugin.getSettingsFile().getSortableTeams());
+		}
+
+		if (plugin.getPermissionHandler() == PermissionHandler.PERMISSIONSEX) {
+			new PermissionsExHandler(plugin,this);
 		}
 	}
 
-	public TablistSorter(LuckPermsApi luckPermsApi) {
+	public TablistSorter(EpicSuite plugin, LuckPermsApi luckPermsApi) {
+		this.plugin = plugin;
 		scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 		teams = new HashMap<>();
 
-		if (EpicSuite.getPlugin().getSettingsFile().getSortableTeams() != null) {
-			init(EpicSuite.getPlugin().getSettingsFile().getSortableTeams());
+		if (plugin.getSettingsFile().getSortableTeams() != null) {
+			init(plugin.getSettingsFile().getSortableTeams());
 		}
 
 		new LuckPermsHandler(luckPermsApi, this);
@@ -56,7 +63,7 @@ public class TablistSorter implements Listener {
 			team.setColor(tablistTeam.getColor());
 			teams.put(tablistTeam, team);
 
-			EpicSuite.getPlugin().getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getName() + ChatColor.RESET + " ...");
+			plugin.getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getName() + ChatColor.RESET + " ...");
 		}
 	}
 
@@ -111,13 +118,4 @@ public class TablistSorter implements Listener {
 		removePlayer(event.getPlayer());
 	}
 
-	@EventHandler
-	public void onRankUpdate(final PermissionEntityEvent event) {
-		if (event.getAction() == PermissionEntityEvent.Action.RANK_CHANGED) {
-			final Player player = Bukkit.getPlayer(UUID.fromString(event.getEntityIdentifier()));
-			if (player != null) {
-				updatePlayer(player);
-			}
-		}
-	}
 }
