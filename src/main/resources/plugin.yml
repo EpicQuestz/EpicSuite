@@ -17,4 +17,5 @@ commands:
     description: Clears the server chat
     permission: epicsuite.clearchat
   shrug:
+    aliases: [tableflip, unflip, riot]
     description: Sends a schrug message
