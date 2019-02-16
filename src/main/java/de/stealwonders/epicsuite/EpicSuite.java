@@ -2,10 +2,7 @@ package de.stealwonders.epicsuite;
 
 import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
-import de.stealwonders.epicsuite.commands.ChatClearCommand;
-import de.stealwonders.epicsuite.commands.NotificationCommand;
-import de.stealwonders.epicsuite.commands.PingCommand;
-import de.stealwonders.epicsuite.commands.EmojiCommands;
+import de.stealwonders.epicsuite.commands.*;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
@@ -31,6 +28,8 @@ public final class EpicSuite extends JavaPlugin {
     PermissionHandler permissionHandler;
     LuckPermsApi luckPermsApi;
 
+    DonatorMessageCommands donatorMessageCommands;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -41,6 +40,8 @@ public final class EpicSuite extends JavaPlugin {
         storageFile = new StorageFile(this);
 
         chatNotification = new ChatNotification();
+
+        donatorMessageCommands = new DonatorMessageCommands();
 
         final Plugin permissionsEx = getServer().getPluginManager().getPlugin("PermissionsEx");
         final Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
@@ -76,12 +77,14 @@ public final class EpicSuite extends JavaPlugin {
     private void registerListeners() {
         this.getServer().getPluginManager().registerEvents(new ChatHighlight(), this);
         this.getServer().getPluginManager().registerEvents(chatNotification, this);
+        this.getServer().getPluginManager().registerEvents(donatorMessageCommands, this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
         this.getServer().getPluginManager().registerEvents(new TablistHandler(), this);
     }
 
     private void registerCommands() {
         this.getCommand("clearchat").setExecutor(new ChatClearCommand());
+        this.getCommand("setjoinmessage").setExecutor(donatorMessageCommands);
         this.getCommand("chatnotification").setExecutor(new NotificationCommand());
         this.getCommand("ping").setExecutor(new PingCommand());
         this.getCommand("shrug").setExecutor(new EmojiCommands());

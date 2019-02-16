@@ -11,11 +11,14 @@ commands:
   chatnotification:
     description: Toggles the chat notifier on / off
     aliases: [notification, chatping]
+  setjoinmessage:
+    description: Sets the join / leave message
+    aliases: [setleavemessage, deljoinmessage, delleavemessage]
   ping:
     description: Displays your current server ping
   clearchat:
     description: Clears the server chat
     permission: epicsuite.clearchat
   shrug:
-    aliases: [tableflip, unflip, riot]
     description: Sends a schrug message
+    aliases: [tableflip, unflip, riot]

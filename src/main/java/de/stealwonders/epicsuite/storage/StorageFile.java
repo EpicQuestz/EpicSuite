@@ -5,6 +5,7 @@ import de.stealwonders.epicsuite.EpicSuite;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,8 @@ public class StorageFile {
     private HashSet<UUID> subscribers = new HashSet<>();
 
     private static final String SUBSCRIBER_PATH = "notifications.subscribers";
+    private static final String JOINMESSAGE_PATH = "donator.joinmessage";
+    private static final String LEAVEMESSAGE_PATH = "donator.leavemessage";
 
     public StorageFile(final EpicSuite plugin) {
         file = new File(plugin.getDataFolder(), "storage.yml");
@@ -36,9 +39,7 @@ public class StorageFile {
 
         try {
             configuration.load(file);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } catch (final InvalidConfigurationException exception) {
+        } catch (final IOException | InvalidConfigurationException exception) {
             exception.printStackTrace();
         }
     }
@@ -46,8 +47,8 @@ public class StorageFile {
     public void save() {
         try {
             configuration.save(file);
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -79,5 +80,33 @@ public class StorageFile {
             return ImmutableList.copyOf(subscribers);
         }
         return null;
+    }
+
+    public String getPlayerJoinMessage(Player player) {
+        return getConfiguration().getString(JOINMESSAGE_PATH + "." + player.getUniqueId());
+    }
+
+    public String getPlayerLeaveMessage(Player player) {
+        return getConfiguration().getString(LEAVEMESSAGE_PATH + "." + player.getUniqueId());
+    }
+
+    public void setPlayerJoinMessage(Player player, String string) {
+        getConfiguration().set(JOINMESSAGE_PATH + "." + player.getUniqueId(), string);
+        save();
+    }
+
+    public void setPlayerLeaveMessage(Player player, String string) {
+        getConfiguration().set(LEAVEMESSAGE_PATH + "." + player.getUniqueId(), string);
+        save();
+    }
+
+    public void deletePlayerJoinMessage(Player player) {
+        getConfiguration().set(JOINMESSAGE_PATH + "." + player.getUniqueId(), null);
+        save();
+    }
+
+    public void deletePlayerLeaveMessage(Player player) {
+        getConfiguration().set(LEAVEMESSAGE_PATH + "." + player.getUniqueId(), null);
+        save();
     }
 }
