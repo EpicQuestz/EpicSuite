@@ -32,7 +32,7 @@ public class EmojiCommands implements CommandExecutor {
                         break;
                 }
             } else {
-                player.sendMessage("§dYou need to §5§ldonate &dto be able to use this feature. Use §5§l/buy §dfor more information.");
+                player.sendMessage("§dYou need to §5§ldonate §dto be able to use this feature. Use §5§l/buy §dfor more information.");
             }
 
         } else {
