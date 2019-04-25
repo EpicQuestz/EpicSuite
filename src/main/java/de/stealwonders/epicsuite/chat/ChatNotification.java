@@ -16,7 +16,6 @@ public class ChatNotification implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(final AsyncPlayerChatEvent event) {
-
         for (final Player player : Bukkit.getOnlinePlayers()) {
             if (event.getPlayer() != player) {
                 if (event.getMessage().toLowerCase().contains(player.getName().toLowerCase())) {

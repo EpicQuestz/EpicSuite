@@ -21,9 +21,7 @@ public class ChatHighlight implements Listener {
 
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent event) {
-
         String message = event.getMessage();
-
         for (final Player player : Bukkit.getOnlinePlayers()) {
             if (message.toLowerCase().contains(player.getName().toLowerCase())) {
 
