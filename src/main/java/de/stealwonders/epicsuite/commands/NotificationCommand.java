@@ -11,10 +11,8 @@ public class NotificationCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-
         if (sender instanceof Player) {
             final Player player =  (Player) sender;
-
             final ChatNotification chatNotifier = EpicSuite.getPlugin().getChatNotifier();
 
             if (chatNotifier.isSubscriber(player.getUniqueId())) {
@@ -28,7 +26,6 @@ public class NotificationCommand implements CommandExecutor {
         } else {
             sender.sendMessage("You must be a player to execute this command.");
         }
-
         return false;
     }
 }

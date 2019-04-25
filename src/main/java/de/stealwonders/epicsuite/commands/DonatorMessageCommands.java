@@ -16,7 +16,6 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         Player player = (Player) sender;
         if (player.hasPermission("epicsuite.donatormessage")) {
 
