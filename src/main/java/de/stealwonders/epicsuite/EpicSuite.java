@@ -17,8 +17,6 @@ import java.util.UUID;
 
 public final class EpicSuite extends JavaPlugin {
 
-    private static EpicSuite plugin;
-
     private SettingsFile settingsFile;
     private StorageFile storageFile;
 
@@ -32,8 +30,6 @@ public final class EpicSuite extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
-        plugin = this;
 
         settingsFile = new SettingsFile(this);
         storageFile = new StorageFile(this);
