@@ -14,16 +14,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class DonatorMessageCommands implements CommandExecutor, Listener {
 
+    private EpicSuite plugin;
+
+    public DonatorMessageCommands(final EpicSuite plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player = (Player) sender;
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+        final Player player = (Player) sender;
         if (player.hasPermission("epicsuite.donatormessage")) {
 
             String message = null;
             if (args.length >= 1) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < args.length; i++) {
-                    stringBuilder.append(args[i]).append(" ");
+                final StringBuilder stringBuilder = new StringBuilder();
+                for (final String arg : args) {
+                    stringBuilder.append(arg).append(" ");
                 }
                 message = stringBuilder.toString();
             }
@@ -33,7 +39,7 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
                     case "setjoinmessage":
                         if (message != null) {
                             if (message.contains(player.getName())) {
-                                EpicSuite.getPlugin().getStorageFile().setPlayerJoinMessage(player, message);
+                                plugin.getStorageFile().setPlayerJoinMessage(player, message);
                                 player.sendMessage("§dSet join message to: " + message);
                             } else {
                                 player.sendMessage("§dJoin or leave messages must contain your name!");
@@ -42,10 +48,11 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
                             player.sendMessage("§dPlease specify a join message.");
                         }
                         break;
+
                     case "setleavemessage":
                         if (message != null) {
                             if (message.contains(player.getName())) {
-                                EpicSuite.getPlugin().getStorageFile().setPlayerLeaveMessage(player, message);
+                                plugin.getStorageFile().setPlayerLeaveMessage(player, message);
                                 player.sendMessage("§dSet leave message to: " + message);
                             } else {
                                 player.sendMessage("§dJoin or leave messages must contain your name!");
@@ -54,15 +61,16 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
                             player.sendMessage("§dPlease specify a leave message.");
                         }
                         break;
+
                     case "deljoinmessage":
-                        EpicSuite.getPlugin().getStorageFile().deletePlayerJoinMessage(player);
+                        plugin.getStorageFile().deletePlayerJoinMessage(player);
                         player.sendMessage("§dRemoved join message.");
                         break;
+
                     case "delleavemessage":
-                        EpicSuite.getPlugin().getStorageFile().deletePlayerLeaveMessage(player);
+                        plugin.getStorageFile().deletePlayerLeaveMessage(player);
                         player.sendMessage("§dRemoved leave message.");
                         break;
-
                 }
 
         } else {
@@ -72,11 +80,10 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onJoin(final PlayerJoinEvent event) {
         event.setJoinMessage(null);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSuite.getPlugin(), () -> {
-            String message = EpicSuite.getPlugin().getStorageFile().getPlayerJoinMessage(event.getPlayer());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            final String message = plugin.getStorageFile().getPlayerJoinMessage(event.getPlayer());
             if (message != null) {
                 Bukkit.broadcastMessage(ChatColor.GRAY + message);
             } else {
@@ -86,11 +93,10 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(final PlayerQuitEvent event) {
         event.setQuitMessage(null);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(EpicSuite.getPlugin(), () -> {
-            String message = EpicSuite.getPlugin().getStorageFile().getPlayerLeaveMessage(event.getPlayer());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            final String message = plugin.getStorageFile().getPlayerLeaveMessage(event.getPlayer());
             if (message != null) {
                 Bukkit.broadcastMessage(ChatColor.DARK_GRAY + message);
             } else {

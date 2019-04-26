@@ -19,16 +19,15 @@ public final class EpicSuite extends JavaPlugin {
 
     private static EpicSuite plugin;
 
-    SettingsFile settingsFile;
-    StorageFile storageFile;
+    private SettingsFile settingsFile;
+    private StorageFile storageFile;
 
-    ChatNotification chatNotification;
-    TablistSorter tablistSorter;
+    private ChatNotification chatNotification;
+    private TablistSorter tablistSorter;
 
-    PermissionHandler permissionHandler;
-    LuckPermsApi luckPermsApi;
+    private LuckPermsApi luckPermsApi;
 
-    DonatorMessageCommands donatorMessageCommands;
+    private DonatorMessageCommands donatorMessageCommands;
 
     @Override
     public void onEnable() {
@@ -39,28 +38,22 @@ public final class EpicSuite extends JavaPlugin {
         settingsFile = new SettingsFile(this);
         storageFile = new StorageFile(this);
 
-        chatNotification = new ChatNotification();
+        chatNotification = new ChatNotification(this);
 
-        donatorMessageCommands = new DonatorMessageCommands();
+        donatorMessageCommands = new DonatorMessageCommands(this);
 
-        final Plugin permissionsEx = getServer().getPluginManager().getPlugin("PermissionsEx");
         final Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
 
         if (luckPerms != null) {
-            permissionHandler = PermissionHandler.LUCKPERMS;
             final RegisteredServiceProvider<LuckPermsApi> provider = Bukkit.getServicesManager().getRegistration(LuckPermsApi.class);
             if (provider != null) {
                 luckPermsApi = provider.getProvider();
                 tablistSorter = new TablistSorter(this, luckPermsApi);
             }
-        } else if (permissionsEx != null) {
-            permissionHandler = PermissionHandler.PERMISSIONSEX;
-            tablistSorter = new TablistSorter(this);
         } else {
-            Bukkit.getLogger().severe("No permission handler found (PermissionsEx or LuckPerms)\nDisabling plugin.");
+            Bukkit.getLogger().severe("No permission handler found (LuckPerms)\nDisabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
         }
-        this.getLogger().info("Setting PermissionHandler to: " + permissionHandler);
 
         registerListeners();
         registerCommands();
@@ -75,7 +68,7 @@ public final class EpicSuite extends JavaPlugin {
     }
 
     private void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new ChatHighlight(), this);
+        this.getServer().getPluginManager().registerEvents(new ChatHighlight(luckPermsApi), this);
         this.getServer().getPluginManager().registerEvents(chatNotification, this);
         this.getServer().getPluginManager().registerEvents(donatorMessageCommands, this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
@@ -85,7 +78,7 @@ public final class EpicSuite extends JavaPlugin {
     private void registerCommands() {
         this.getCommand("clearchat").setExecutor(new ChatClearCommand());
         this.getCommand("setjoinmessage").setExecutor(donatorMessageCommands);
-        this.getCommand("chatnotification").setExecutor(new NotificationCommand());
+        this.getCommand("chatnotification").setExecutor(new NotificationCommand(this));
         this.getCommand("ping").setExecutor(new PingCommand());
         this.getCommand("shrug").setExecutor(new EmojiCommands());
     }
@@ -96,10 +89,6 @@ public final class EpicSuite extends JavaPlugin {
                 chatNotification.addSubscriber(UUID.fromString(string));
             }
         }
-    }
-
-    public static EpicSuite getPlugin() {
-        return plugin;
     }
 
     public SettingsFile getSettingsFile() {
@@ -118,7 +107,4 @@ public final class EpicSuite extends JavaPlugin {
         return luckPermsApi;
     }
 
-    public PermissionHandler getPermissionHandler() {
-        return permissionHandler;
-    }
 }

@@ -1,9 +1,6 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
-import de.stealwonders.epicsuite.PermissionHandler;
-import de.stealwonders.epicsuite.scoreboard.impl.LuckPermsHandler;
-import de.stealwonders.epicsuite.scoreboard.impl.PermissionsExHandler;
 import me.lucko.luckperms.api.LuckPermsApi;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,62 +14,49 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class TablistSorter implements Listener {
 
     private EpicSuite plugin;
+    private LuckPermsApi luckPermsApi;
     private Scoreboard scoreboard;
     private HashMap<TablistTeam, Team> teams;
 
-    public TablistSorter(final EpicSuite plugin) {
-        this.plugin = plugin;
-        scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        teams = new HashMap<>();
-
-        if (plugin.getSettingsFile().getSortableTeams() != null) {
-            init(plugin.getSettingsFile().getSortableTeams());
-        }
-
-        if (plugin.getPermissionHandler() == PermissionHandler.PERMISSIONSEX) {
-            new PermissionsExHandler(plugin,this);
-        }
-    }
-
     public TablistSorter(final EpicSuite plugin, final LuckPermsApi luckPermsApi) {
         this.plugin = plugin;
+        this.luckPermsApi = luckPermsApi;
         scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         teams = new HashMap<>();
 
         if (plugin.getSettingsFile().getSortableTeams() != null) {
             init(plugin.getSettingsFile().getSortableTeams());
         }
-
-        new LuckPermsHandler(luckPermsApi, this);
     }
 
     private void init(final ArrayList<TablistTeam> tablistTeams) {
         for (final TablistTeam tablistTeam : tablistTeams) {
-            final String name = tablistTeam.getPriority() + "_" + tablistTeam.getName();
+            final String name = tablistTeam.getPriority() + "_" + tablistTeam.getGroup().getName();
 
             Team team = scoreboard.getTeam(name);
             if (team != null) {
                 team.unregister();
             }
 
-            team = scoreboard.registerNewTeam(tablistTeam.getPriority() + "_" + tablistTeam.getName());
+            team = scoreboard.registerNewTeam(tablistTeam.getPriority() + "_" + tablistTeam.getGroup().getName());
             team.setColor(tablistTeam.getColor());
             teams.put(tablistTeam, team);
 
-            plugin.getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getName() + ChatColor.RESET + " ...");
+            plugin.getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getGroup().getName() + ChatColor.RESET + " ...");
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void addPlayer(final Player player) {
         if (teams != null) {
             TablistTeam team = null;
             for (final TablistTeam tablistTeam : teams.keySet()) {
-                if (tablistTeam.isInGroup(player)) {
+
+                if (Objects.requireNonNull(luckPermsApi.getUser(player.getUniqueId())).inheritsGroup(tablistTeam.getGroup())) {
                     if (team != null) {
                         if (team.getPriority() > tablistTeam.getPriority()) {
                             team = tablistTeam;
@@ -83,17 +67,16 @@ public class TablistSorter implements Listener {
                 }
             }
             if (team != null) {
-                teams.get(team).addPlayer(player);
+                teams.get(team).addEntry(player.getName());
             }
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void removePlayer(final Player player) {
         if (teams != null) {
             for (final Team team : teams.values()) {
-                if (team.getPlayers().contains(player)) {
-                    team.removePlayer(player);
+                if (team.getEntries().contains(player.getName())) {
+                    team.removeEntry(player.getName());
                 }
             }
         }

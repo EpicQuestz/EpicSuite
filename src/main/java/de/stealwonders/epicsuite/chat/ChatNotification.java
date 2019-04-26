@@ -14,6 +14,12 @@ import java.util.UUID;
 
 public class ChatNotification implements Listener {
 
+    private EpicSuite plugin;
+
+    public ChatNotification(final EpicSuite plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(final AsyncPlayerChatEvent event) {
         for (final Player player : Bukkit.getOnlinePlayers()) {
@@ -35,15 +41,15 @@ public class ChatNotification implements Listener {
     }
 
     public void addSubscriber(final UUID uuid) {
-        EpicSuite.getPlugin().getStorageFile().addSubscriber(uuid);
+        plugin.getStorageFile().addSubscriber(uuid);
     }
 
     public void removeSubscriber(final UUID uuid) {
-        EpicSuite.getPlugin().getStorageFile().removeSubscriber(uuid);
+        plugin.getStorageFile().removeSubscriber(uuid);
     }
 
     public boolean isSubscriber(final UUID uuid) {
-        return EpicSuite.getPlugin().getStorageFile().isSubscriber(uuid);
+        return plugin.getStorageFile().isSubscriber(uuid);
     }
 
 }

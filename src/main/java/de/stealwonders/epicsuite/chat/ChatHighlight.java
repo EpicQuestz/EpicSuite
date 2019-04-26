@@ -1,9 +1,8 @@
 package de.stealwonders.epicsuite.chat;
 
-import de.stealwonders.epicsuite.EpicSuite;
-import me.lucko.luckperms.LuckPerms;
 import me.lucko.luckperms.api.Contexts;
 import me.lucko.luckperms.api.Group;
+import me.lucko.luckperms.api.LuckPermsApi;
 import me.lucko.luckperms.api.caching.MetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,13 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import ru.tehkode.permissions.PermissionGroup;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class ChatHighlight implements Listener {
+
+    private LuckPermsApi luckPermsApi;
+
+    public ChatHighlight(final LuckPermsApi luckPermsApi) {
+        this.luckPermsApi = luckPermsApi;
+    }
 
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent event) {
@@ -25,7 +27,7 @@ public class ChatHighlight implements Listener {
         for (final Player player : Bukkit.getOnlinePlayers()) {
             if (message.toLowerCase().contains(player.getName().toLowerCase())) {
 
-                final Object group = getGroup(event.getPlayer());
+                final Group group = getGroup(event.getPlayer());
                 final String suffix = getSuffix(group);
                 final String colorString = suffix.substring(suffix.length() - 1);
                 final ChatColor color = ChatColor.getByChar(colorString);
@@ -39,43 +41,13 @@ public class ChatHighlight implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private Object getGroup(@Nonnull final Player player) {
-        switch (EpicSuite.getPlugin().getPermissionHandler()) {
-            case PERMISSIONSEX:
-                final PermissionUser permissionUser = PermissionsEx.getUser(player);
-                final PermissionGroup[] groups = permissionUser.getGroups();
-                PermissionGroup highestGroup = groups[0];
-                for (final PermissionGroup permissionGroup : groups) {
-                    if (permissionGroup.getRank() < highestGroup.getRank()) {
-                        highestGroup = permissionGroup;
-                    }
-                }
-                return highestGroup;
-            case LUCKPERMS:
-                return LuckPerms.getApi().getGroup(LuckPerms.getApi().getUser(player.getUniqueId()).getPrimaryGroup());
-            default:
-                return null;
-
-        }
+    private Group getGroup(final Player player) {
+        return luckPermsApi.getGroup(Objects.requireNonNull(luckPermsApi.getUser(player.getUniqueId())).getPrimaryGroup());
     }
 
-    private String getSuffix(final Object object) {
-        switch (EpicSuite.getPlugin().getPermissionHandler()) {
-            case PERMISSIONSEX:
-                if (object instanceof PermissionGroup) {
-                    final PermissionGroup permissionGroup = (PermissionGroup) object;
-                    return permissionGroup.getSuffix();
-                }
-            case LUCKPERMS:
-                if (object instanceof Group) {
-                    final Group group = (Group) object;
-                    final Contexts contexts = LuckPerms.getApi().getContextManager().getStaticContexts();
-                    final MetaData metaData = group.getCachedData().getMetaData(contexts);
-                    return metaData.getSuffix();
-                }
-            default:
-                return null;
-        }
+    private String getSuffix(final Group group) {
+        final Contexts contexts = luckPermsApi.getContextManager().getStaticContexts();
+        final MetaData metaData = group.getCachedData().getMetaData(contexts);
+        return metaData.getSuffix();
     }
 }

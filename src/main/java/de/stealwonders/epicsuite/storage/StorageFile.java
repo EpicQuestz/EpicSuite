@@ -82,30 +82,30 @@ public class StorageFile {
         return null;
     }
 
-    public String getPlayerJoinMessage(Player player) {
+    public String getPlayerJoinMessage(final Player player) {
         return getConfiguration().getString(JOINMESSAGE_PATH + "." + player.getUniqueId());
     }
 
-    public String getPlayerLeaveMessage(Player player) {
+    public String getPlayerLeaveMessage(final Player player) {
         return getConfiguration().getString(LEAVEMESSAGE_PATH + "." + player.getUniqueId());
     }
 
-    public void setPlayerJoinMessage(Player player, String string) {
+    public void setPlayerJoinMessage(final Player player, final String string) {
         getConfiguration().set(JOINMESSAGE_PATH + "." + player.getUniqueId(), string);
         save();
     }
 
-    public void setPlayerLeaveMessage(Player player, String string) {
+    public void setPlayerLeaveMessage(final Player player, final String string) {
         getConfiguration().set(LEAVEMESSAGE_PATH + "." + player.getUniqueId(), string);
         save();
     }
 
-    public void deletePlayerJoinMessage(Player player) {
+    public void deletePlayerJoinMessage(final Player player) {
         getConfiguration().set(JOINMESSAGE_PATH + "." + player.getUniqueId(), null);
         save();
     }
 
-    public void deletePlayerLeaveMessage(Player player) {
+    public void deletePlayerLeaveMessage(final Player player) {
         getConfiguration().set(LEAVEMESSAGE_PATH + "." + player.getUniqueId(), null);
         save();
     }

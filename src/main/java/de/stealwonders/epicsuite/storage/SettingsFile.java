@@ -3,21 +3,15 @@ package de.stealwonders.epicsuite.storage;
 import de.stealwonders.epicsuite.EpicSuite;
 import de.stealwonders.epicsuite.scoreboard.TablistTeam;
 import me.lucko.luckperms.api.Group;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import ru.tehkode.permissions.PermissionGroup;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 public class SettingsFile {
 
@@ -45,9 +39,7 @@ public class SettingsFile {
 
         try {
             configuration.load(file);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } catch (final InvalidConfigurationException exception) {
+        } catch (final IOException | InvalidConfigurationException exception) {
             exception.printStackTrace();
         }
     }
@@ -88,28 +80,10 @@ public class SettingsFile {
                 final int priority = configurationSection.isSet(SORTABLE_GROUPS_PATH_PRIORITY) ? configurationSection.getInt(SORTABLE_GROUPS_PATH_PRIORITY) : 0;
                 final ChatColor color = configurationSection.isSet(SORTABLE_GROUPS_PATH_COLOR) ? ChatColor.valueOf(configurationSection.getString(SORTABLE_GROUPS_PATH_COLOR)) : ChatColor.WHITE;
 
-                switch (plugin.getPermissionHandler()) {
-                    case PERMISSIONSEX:
-
-                        final PermissionGroup permissionGroup = PermissionsEx.getPermissionManager().getGroup(group);
-                        if (permissionGroup != null) {
-                            final TablistTeam<PermissionGroup> team = new TablistTeam<>(permissionGroup, priority, color);
-                            sortableTeams.add(team);
-                        }
-                        break;
-
-                    case LUCKPERMS:
-
-                        final Group luckGroup = plugin.getLuckPermsApi().getGroup(group);
-                        if (luckGroup != null) {
-                            final TablistTeam<Group> team = new TablistTeam<>(luckGroup, priority, color);
-                            sortableTeams.add(team);
-                        }
-                        break;
-
-
-                    default:
-                        Bukkit.getLogger().severe("Reached unreachable state. It's advised to shutdown your server.");
+                final Group luckGroup = plugin.getLuckPermsApi().getGroup(group);
+                if (luckGroup != null) {
+                    final TablistTeam<Group> team = new TablistTeam<>(luckGroup, priority, color);
+                    sortableTeams.add(team);
                 }
             }
             return sortableTeams;
