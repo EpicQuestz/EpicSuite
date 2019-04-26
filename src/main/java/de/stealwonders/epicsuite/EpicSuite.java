@@ -19,16 +19,16 @@ public final class EpicSuite extends JavaPlugin {
 
     private static EpicSuite plugin;
 
-    SettingsFile settingsFile;
-    StorageFile storageFile;
+    private SettingsFile settingsFile;
+    private StorageFile storageFile;
 
-    ChatNotification chatNotification;
-    TablistSorter tablistSorter;
+    private ChatNotification chatNotification;
+    private TablistSorter tablistSorter;
 
-    PermissionHandler permissionHandler;
-    LuckPermsApi luckPermsApi;
+    private PermissionHandler permissionHandler;
+    private LuckPermsApi luckPermsApi;
 
-    DonatorMessageCommands donatorMessageCommands;
+    private DonatorMessageCommands donatorMessageCommands;
 
     @Override
     public void onEnable() {
