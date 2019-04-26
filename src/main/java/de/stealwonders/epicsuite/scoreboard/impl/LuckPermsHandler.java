@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class LuckPermsHandler {
 
-    TablistSorter tablistSorter;
+    private TablistSorter tablistSorter;
 
     public LuckPermsHandler(final LuckPermsApi luckPermsApi, final TablistSorter tablistSorter) {
         this.tablistSorter = tablistSorter;

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class PermissionsExHandler implements Listener {
 
-    TablistSorter tablistSorter;
+    private TablistSorter tablistSorter;
 
     public PermissionsExHandler(final EpicSuite plugin, final TablistSorter tablistSorter) {
         this.tablistSorter = tablistSorter;
