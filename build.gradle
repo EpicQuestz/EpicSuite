@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.destroystokyo.paper:paper-api:1.13-R0.1-SNAPSHOT'
+    compile 'com.destroystokyo.paper:paper-api:1.14-R0.1-SNAPSHOT'
     compile 'me.lucko.luckperms:luckperms-api:4.4'
 }
 

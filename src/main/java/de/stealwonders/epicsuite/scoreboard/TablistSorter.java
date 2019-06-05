@@ -2,6 +2,9 @@ package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
 import me.lucko.luckperms.api.LuckPermsApi;
+import me.lucko.luckperms.api.event.EventBus;
+import me.lucko.luckperms.api.event.log.LogPublishEvent;
+import me.lucko.luckperms.api.event.user.track.UserTrackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,6 +31,10 @@ public class TablistSorter implements Listener {
         this.luckPermsApi = luckPermsApi;
         scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         teams = new HashMap<>();
+
+        final EventBus eventBus = luckPermsApi.getEventBus();
+        eventBus.subscribe(LogPublishEvent.class, e -> e.getCancellationState().set(true));
+        eventBus.subscribe(UserTrackEvent.class, this::onRankUpdate);
 
         if (plugin.getSettingsFile().getSortableTeams() != null) {
             init(plugin.getSettingsFile().getSortableTeams());
@@ -99,6 +106,13 @@ public class TablistSorter implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
         removePlayer(event.getPlayer());
+    }
+
+    private void onRankUpdate(final UserTrackEvent event) {
+        final Player player = Bukkit.getPlayer(event.getUser().getUuid());
+        if (player != null) {
+            updatePlayer(player);
+        }
     }
 
 }
