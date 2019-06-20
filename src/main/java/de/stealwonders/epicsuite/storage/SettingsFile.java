@@ -82,7 +82,7 @@ public class SettingsFile {
 
                 final Group luckGroup = plugin.getLuckPermsApi().getGroup(group);
                 if (luckGroup != null) {
-                    final TablistTeam<Group> team = new TablistTeam<>(luckGroup, priority, color);
+                    final TablistTeam team = new TablistTeam(luckGroup, priority, color);
                     sortableTeams.add(team);
                 }
             }
