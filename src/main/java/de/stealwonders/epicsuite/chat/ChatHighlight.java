@@ -1,8 +1,6 @@
 package de.stealwonders.epicsuite.chat;
 
-import me.lucko.luckperms.api.Contexts;
-import me.lucko.luckperms.api.Group;
-import me.lucko.luckperms.api.LuckPermsApi;
+import me.lucko.luckperms.api.*;
 import me.lucko.luckperms.api.caching.MetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,8 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.Objects;
 
 public class ChatHighlight implements Listener {
 
@@ -42,7 +38,15 @@ public class ChatHighlight implements Listener {
     }
 
     private Group getGroup(final Player player) {
-        return luckPermsApi.getGroup(Objects.requireNonNull(luckPermsApi.getUser(player.getUniqueId())).getPrimaryGroup());
+        Track track = luckPermsApi.getTrack("default");
+        User user = luckPermsApi.getUser(player.getUniqueId());
+        for (String groupName : track.getGroups()) {
+            Group group = luckPermsApi.getGroup(groupName);
+            if (user.inheritsGroup(group)) {
+                return group;
+            }
+        }
+        return null;
     }
 
     private String getSuffix(final Group group) {
