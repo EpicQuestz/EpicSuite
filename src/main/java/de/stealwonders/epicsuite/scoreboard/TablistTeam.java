@@ -3,7 +3,7 @@ package de.stealwonders.epicsuite.scoreboard;
 import me.lucko.luckperms.api.Group;
 import org.bukkit.ChatColor;
 
-public class TablistTeam<T> {
+public class TablistTeam {
 
     private Group group;
     private int priority;
