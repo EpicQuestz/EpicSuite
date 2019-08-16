@@ -27,6 +27,15 @@ public class EmojiCommands implements CommandExecutor {
                     case "riot":
                         player.chat("ヽ༼ຈل͜ຈ༽ﾉ RIOT ヽ༼ຈل͜ຈ༽ﾉ");
                         break;
+                    case "lenny":
+                        player.chat("( ͡° ͜ʖ ͡°)");
+                        break;
+                    case "sad":
+                        player.chat("(ಥ﹏ಥ)");
+                        break;
+                    case "kawaii":
+                        player.chat("(づ｡◕‿‿◕｡)づ");
+                        break;
                 }
             } else {
                 player.sendMessage("§dYou need to §5§ldonate §dto be able to use this feature. Use §5§l/buy §dfor more information.");
