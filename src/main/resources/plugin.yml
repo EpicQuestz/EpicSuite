@@ -21,4 +21,4 @@ commands:
     permission: epicsuite.clearchat
   shrug:
     description: Sends a schrug message
-    aliases: [tableflip, unflip, riot]
+    aliases: [tableflip, unflip, riot, lenny, sad, kawaii]
