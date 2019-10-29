@@ -32,7 +32,15 @@ public class ChatHighlight implements Listener {
                 final String[] parts = message.split(player.getName());
                 ChatColor lastColor = ChatColor.WHITE;
 
-                // If a player only says someones name without and text
+                // If a player's group has a different chat color than normal: use that instead of white
+                final Group group = getGroup(event.getPlayer());
+                if (group != null) {
+                    final String suffix = getSuffix(group);
+                    final String colorString = suffix.substring(suffix.length() - 1);
+                    lastColor = ChatColor.getByChar(colorString);
+                }
+
+                // If a player only says someones name without any text
                 if (parts.length == 0) {
                     message = message.replaceAll(player.getName(), "§6§o" + player.getName());
                 }
@@ -90,9 +98,7 @@ public class ChatHighlight implements Listener {
     private Group getGroup(final Player player) {
         final Track track = luckPermsApi.getTrack("default");
         if (track != null) {
-            System.out.println(track);
             final User user = luckPermsApi.getUser(player.getUniqueId());
-            System.out.println(user);
             for (final String groupName : track.getGroups()) {
                 final Group group = luckPermsApi.getGroup(groupName);
                 if (user.inheritsGroup(group)) {
