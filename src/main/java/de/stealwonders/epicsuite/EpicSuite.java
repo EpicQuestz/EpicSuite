@@ -7,7 +7,7 @@ import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
 import de.stealwonders.epicsuite.tablist.TablistHandler;
-import me.lucko.luckperms.api.LuckPermsApi;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -23,7 +23,7 @@ public final class EpicSuite extends JavaPlugin {
     private ChatNotification chatNotification;
     private TablistSorter tablistSorter;
 
-    private LuckPermsApi luckPermsApi;
+    private LuckPerms luckPermsApi;
 
     private DonatorMessageCommands donatorMessageCommands;
 
@@ -41,7 +41,7 @@ public final class EpicSuite extends JavaPlugin {
         final Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
 
         if (luckPerms != null) {
-            final RegisteredServiceProvider<LuckPermsApi> provider = Bukkit.getServicesManager().getRegistration(LuckPermsApi.class);
+            final RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
             if (provider != null) {
                 luckPermsApi = provider.getProvider();
                 tablistSorter = new TablistSorter(this, luckPermsApi);
@@ -99,7 +99,7 @@ public final class EpicSuite extends JavaPlugin {
         return chatNotification;
     }
 
-    public LuckPermsApi getLuckPermsApi() {
+    public LuckPerms getLuckPermsApi() {
         return luckPermsApi;
     }
 

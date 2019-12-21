@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     compile 'com.destroystokyo.paper:paper-api:1.14-R0.1-SNAPSHOT'
-    compile 'me.lucko.luckperms:luckperms-api:4.4'
+    compile 'net.luckperms:api:5.0'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

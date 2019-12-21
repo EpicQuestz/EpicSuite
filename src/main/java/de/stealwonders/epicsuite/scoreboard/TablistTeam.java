@@ -1,6 +1,6 @@
 package de.stealwonders.epicsuite.scoreboard;
 
-import me.lucko.luckperms.api.Group;
+import net.luckperms.api.model.group.Group;
 import org.bukkit.ChatColor;
 
 public class TablistTeam {

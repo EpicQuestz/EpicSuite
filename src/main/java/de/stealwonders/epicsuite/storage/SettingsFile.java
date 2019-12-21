@@ -2,7 +2,7 @@ package de.stealwonders.epicsuite.storage;
 
 import de.stealwonders.epicsuite.EpicSuite;
 import de.stealwonders.epicsuite.scoreboard.TablistTeam;
-import me.lucko.luckperms.api.Group;
+import net.luckperms.api.model.group.Group;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -80,7 +80,7 @@ public class SettingsFile {
                 final int priority = configurationSection.isSet(SORTABLE_GROUPS_PATH_PRIORITY) ? configurationSection.getInt(SORTABLE_GROUPS_PATH_PRIORITY) : 0;
                 final ChatColor color = configurationSection.isSet(SORTABLE_GROUPS_PATH_COLOR) ? ChatColor.valueOf(configurationSection.getString(SORTABLE_GROUPS_PATH_COLOR)) : ChatColor.WHITE;
 
-                final Group luckGroup = plugin.getLuckPermsApi().getGroup(group);
+                final Group luckGroup = plugin.getLuckPermsApi().getGroupManager().getGroup(group);
                 if (luckGroup != null) {
                     final TablistTeam team = new TablistTeam(luckGroup, priority, color);
                     sortableTeams.add(team);

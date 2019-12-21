@@ -1,7 +1,12 @@
 package de.stealwonders.epicsuite.chat;
 
-import me.lucko.luckperms.api.*;
-import me.lucko.luckperms.api.caching.MetaData;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.context.ContextManager;
+import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.query.QueryOptions;
+import net.luckperms.api.track.Track;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,9 +20,9 @@ import java.util.regex.Pattern;
 
 public class ChatHighlight implements Listener {
 
-    private LuckPermsApi luckPermsApi;
+    private LuckPerms luckPermsApi;
 
-    public ChatHighlight(final LuckPermsApi luckPermsApi) {
+    public ChatHighlight(final LuckPerms luckPermsApi) {
         this.luckPermsApi = luckPermsApi;
     }
 
@@ -96,12 +101,12 @@ public class ChatHighlight implements Listener {
     }
 
     private Group getGroup(final Player player) {
-        final Track track = luckPermsApi.getTrack("default");
+        final Track track = luckPermsApi.getTrackManager().getTrack("default");
         if (track != null) {
-            final User user = luckPermsApi.getUser(player.getUniqueId());
+            final User user = luckPermsApi.getUserManager().getUser(player.getUniqueId());
             for (final String groupName : track.getGroups()) {
-                final Group group = luckPermsApi.getGroup(groupName);
-                if (user.inheritsGroup(group)) {
+                final Group group = luckPermsApi.getGroupManager().getGroup(groupName);
+                if (player.hasPermission("group." + groupName)) {
                     return group;
                 }
             }
@@ -110,8 +115,9 @@ public class ChatHighlight implements Listener {
     }
 
     private String getSuffix(final Group group) {
-        final Contexts contexts = luckPermsApi.getContextManager().getStaticContexts();
-        final MetaData metaData = group.getCachedData().getMetaData(contexts);
+        final ContextManager contextManager = luckPermsApi.getContextManager();
+        final QueryOptions queryOptions = contextManager.getQueryOptions(group);
+        final CachedMetaData metaData = group.getCachedData().getMetaData(queryOptions);
         return metaData.getSuffix();
     }
 }

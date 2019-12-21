@@ -1,10 +1,10 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
-import me.lucko.luckperms.api.LuckPermsApi;
-import me.lucko.luckperms.api.event.EventBus;
-import me.lucko.luckperms.api.event.log.LogPublishEvent;
-import me.lucko.luckperms.api.event.user.track.UserTrackEvent;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.event.EventBus;
+import net.luckperms.api.event.log.LogPublishEvent;
+import net.luckperms.api.event.user.track.UserTrackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,23 +17,22 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class TablistSorter implements Listener {
 
     private EpicSuite plugin;
-    private LuckPermsApi luckPermsApi;
+    private LuckPerms luckPermsApi;
     private Scoreboard scoreboard;
     private HashMap<TablistTeam, Team> teams;
 
-    public TablistSorter(final EpicSuite plugin, final LuckPermsApi luckPermsApi) {
+    public TablistSorter(final EpicSuite plugin, final LuckPerms luckPermsApi) {
         this.plugin = plugin;
         this.luckPermsApi = luckPermsApi;
         scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         teams = new HashMap<>();
 
         final EventBus eventBus = luckPermsApi.getEventBus();
-        eventBus.subscribe(LogPublishEvent.class, e -> e.getCancellationState().set(true));
+        eventBus.subscribe(LogPublishEvent.class, event -> event.setCancelled(true));
         eventBus.subscribe(UserTrackEvent.class, this::onRankUpdate);
 
         if (plugin.getSettingsFile().getSortableTeams() != null) {
@@ -63,7 +62,7 @@ public class TablistSorter implements Listener {
             TablistTeam team = null;
             for (final TablistTeam tablistTeam : teams.keySet()) {
 
-                if (Objects.requireNonNull(luckPermsApi.getUser(player.getUniqueId())).inheritsGroup(tablistTeam.getGroup())) {
+                if (player.hasPermission("group." + tablistTeam.getGroup().getName())) {
                     if (team != null) {
                         if (team.getPriority() > tablistTeam.getPriority()) {
                             team = tablistTeam;
@@ -109,7 +108,7 @@ public class TablistSorter implements Listener {
     }
 
     private void onRankUpdate(final UserTrackEvent event) {
-        final Player player = Bukkit.getPlayer(event.getUser().getUuid());
+        final Player player = Bukkit.getPlayer(event.getUser().getUniqueId());
         if (player != null) {
             updatePlayer(player);
         }
