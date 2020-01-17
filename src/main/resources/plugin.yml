@@ -22,3 +22,6 @@ commands:
   shrug:
     description: Sends a schrug message
     aliases: [tableflip, unflip, riot, lenny, sad, kawaii]
+  resourcepack:
+    description: Opens the resource pack download popup
+    aliases: [rp, texturepack]

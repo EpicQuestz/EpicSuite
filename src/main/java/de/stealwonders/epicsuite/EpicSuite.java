@@ -77,6 +77,7 @@ public final class EpicSuite extends JavaPlugin {
         this.getCommand("chatnotification").setExecutor(new NotificationCommand(this));
         this.getCommand("ping").setExecutor(new PingCommand());
         this.getCommand("shrug").setExecutor(new EmojiCommands());
+        this.getCommand("resourcepack").setExecutor(new ResourcePackCommand(this));
     }
 
     private void fetchNotficationSubscribers() {
