@@ -28,11 +28,7 @@ public class SettingsFile {
 
         if (!file.exists()) {
             file.getParentFile().mkdirs();
-            try {
-                file.createNewFile();
-            } catch (final IOException exception) {
-                exception.printStackTrace();
-            }
+            plugin.saveResource("settings.yml", false);
         }
 
         configuration = new YamlConfiguration();
@@ -53,6 +49,14 @@ public class SettingsFile {
             configuration.save(file);
         } catch (final IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void reload() {
+        try {
+            configuration.load(file);
+        } catch (final InvalidConfigurationException | IOException exception) {
+            exception.printStackTrace();
         }
     }
 

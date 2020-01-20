@@ -1,0 +1,24 @@
+# EpicSuite - A micromanagement plugin for the EpicQuestz server
+# An open-source project by StealWonders
+# GitHub URL: https://github.com/StealWonders/EpicSuite
+#
+# Howdy mate! You've arrived at the configuration file, where things get a bit scary.
+# If you would like to report a bug or suggest a feature,
+# make sure to add an issue on the GitHub page for this plugin!
+# Issue Tracker: https://github.com/StealWonders/EpicSuite/issues
+
+resourcepack:
+  url: "https://downloads.epicquestz.com/files/ResourcePacks/EQPack_3.0.zip" # URL of the resource pack to download when using /rp
+  hash: "90E81B922E60EEB82844CF1568C468F1847954DB" # Resource pack file hash to verify that the downloaded file is the correct one
+
+tablist:
+  groups:
+    creator:
+      priority: 1
+      color: DARK_RED
+    admin:
+      priority: 2
+      color: GOLD
+    default:
+      priority: 3
+      color: GRAY
