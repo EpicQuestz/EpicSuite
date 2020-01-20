@@ -20,7 +20,7 @@ public class SettingsFile {
     private File file;
     private FileConfiguration configuration;
 
-    private static final String SORTABLE_GROUPS_PATH_ROOT = "tablist.groups";
+    private static final String SORTABLE_GROUPS_PATH_ROOT = "groups";
 
     public SettingsFile(final EpicSuite plugin) {
         this.plugin = plugin;

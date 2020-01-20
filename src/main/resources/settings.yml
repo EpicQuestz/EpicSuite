@@ -12,13 +12,16 @@ resourcepack:
   hash: "90E81B922E60EEB82844CF1568C468F1847954DB" # Resource pack file hash to verify that the downloaded file is the correct one
 
 tablist:
-  groups:
-    creator:
-      priority: 1
-      color: DARK_RED
-    admin:
-      priority: 2
-      color: GOLD
-    default:
-      priority: 3
-      color: GRAY
+  header: "\n §2Epic§4Questz\n§7Welcome to the server {player}.\n" # Header of the tablist
+  footer: "\n   §7Visit our website at www.epicquestz.com   \n " # Footer of the tablist
+
+groups:
+  creator:
+    priority: 1
+    color: DARK_RED
+  admin:
+    priority: 2
+    color: GOLD
+  default:
+    priority: 3
+    color: GRAY

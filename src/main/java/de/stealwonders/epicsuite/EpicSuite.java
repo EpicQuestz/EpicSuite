@@ -68,7 +68,7 @@ public final class EpicSuite extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(chatNotification, this);
         this.getServer().getPluginManager().registerEvents(donatorMessageCommands, this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
-        this.getServer().getPluginManager().registerEvents(new TablistHandler(), this);
+        this.getServer().getPluginManager().registerEvents(new TablistHandler(this), this);
     }
 
     private void registerCommands() {
