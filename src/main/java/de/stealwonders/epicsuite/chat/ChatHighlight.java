@@ -120,4 +120,5 @@ public class ChatHighlight implements Listener {
         final CachedMetaData metaData = group.getCachedData().getMetaData(queryOptions);
         return metaData.getSuffix();
     }
+
 }

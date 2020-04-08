@@ -1,5 +1,6 @@
 package de.stealwonders.epicsuite;
 
+import co.aikar.commands.PaperCommandManager;
 import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
 import de.stealwonders.epicsuite.commands.*;
@@ -9,13 +10,19 @@ import de.stealwonders.epicsuite.storage.StorageFile;
 import de.stealwonders.epicsuite.tablist.TablistHandler;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
-public final class EpicSuite extends JavaPlugin {
+public final class EpicSuite extends JavaPlugin implements Listener {
+
+    private PaperCommandManager commandManager;
 
     private SettingsFile settingsFile;
     private StorageFile storageFile;
@@ -31,15 +38,14 @@ public final class EpicSuite extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 
+        commandManager = new PaperCommandManager(this);
+
         settingsFile = new SettingsFile(this);
         storageFile = new StorageFile(this);
 
         chatNotification = new ChatNotification(this);
 
-        donatorMessageCommands = new DonatorMessageCommands(this);
-
         final Plugin luckPerms = getServer().getPluginManager().getPlugin("LuckPerms");
-
         if (luckPerms != null) {
             final RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
             if (provider != null) {
@@ -50,6 +56,8 @@ public final class EpicSuite extends JavaPlugin {
             Bukkit.getLogger().severe("No permission handler found (LuckPerms)\nDisabling plugin.");
             this.getServer().getPluginManager().disablePlugin(this);
         }
+
+        donatorMessageCommands = new DonatorMessageCommands(this);
 
         registerListeners();
         registerCommands();
@@ -69,15 +77,16 @@ public final class EpicSuite extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(donatorMessageCommands, this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
         this.getServer().getPluginManager().registerEvents(new TablistHandler(this), this);
+        this.getServer().getPluginManager().registerEvents(this, this);
     }
 
     private void registerCommands() {
-        this.getCommand("clearchat").setExecutor(new ChatClearCommand());
-        this.getCommand("setjoinmessage").setExecutor(donatorMessageCommands);
-        this.getCommand("chatnotification").setExecutor(new NotificationCommand(this));
-        this.getCommand("ping").setExecutor(new PingCommand());
-        this.getCommand("shrug").setExecutor(new EmojiCommands());
-        this.getCommand("resourcepack").setExecutor(new ResourcePackCommand(this));
+        commandManager.registerCommand(new ChatClearCommand());
+        commandManager.registerCommand(donatorMessageCommands);
+        commandManager.registerCommand(new EmojiCommands());
+        commandManager.registerCommand(new NotificationCommand(this));
+        commandManager.registerCommand(new PingCommand());
+        commandManager.registerCommand(new ResourcePackCommand(this));
     }
 
     private void fetchNotficationSubscribers() {

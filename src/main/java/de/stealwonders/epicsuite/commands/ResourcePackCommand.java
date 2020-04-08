@@ -1,12 +1,15 @@
 package de.stealwonders.epicsuite.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
 import de.stealwonders.epicsuite.EpicSuite;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ResourcePackCommand implements CommandExecutor {
+@CommandAlias("resourcepack|rp|texturepack")
+@Description("Opens the resource pack download popup")
+public class ResourcePackCommand extends BaseCommand {
 
     private String url;
     private String hash;
@@ -16,15 +19,10 @@ public class ResourcePackCommand implements CommandExecutor {
         hash = plugin.getSettingsFile().getConfiguration().getString("resourcepack.hash");
     }
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player) {
-            final Player player = (Player) sender;
-            player.setResourcePack(url, hash);
-            player.sendMessage("§dPrompting resource pack download... If you don't see one make sure to enable server resource packs in your server list.");
-        } else {
-            sender.sendMessage("You must be a player to execute this command.");
-        }
-        return false;
+    @Default
+    public void onCommand(final Player player) {
+        player.setResourcePack(url, hash);
+        player.sendMessage("§dPrompting resource pack download... If you don't see one make sure to enable server resource packs in your server list.");
     }
+
 }

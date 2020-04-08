@@ -24,4 +24,5 @@ public class TablistHandler implements Listener {
         final TextComponent footer = new TextComponent(footerString.replaceAll("\\{player}", event.getPlayer().getName()));
         player.setPlayerListHeaderFooter(header, footer);
     }
+
 }

@@ -109,4 +109,5 @@ public class StorageFile {
         getConfiguration().set(LEAVEMESSAGE_PATH + "." + player.getUniqueId(), null);
         save();
     }
+
 }

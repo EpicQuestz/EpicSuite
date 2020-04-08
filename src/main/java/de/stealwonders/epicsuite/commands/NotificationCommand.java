@@ -1,13 +1,16 @@
 package de.stealwonders.epicsuite.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
 import de.stealwonders.epicsuite.EpicSuite;
 import de.stealwonders.epicsuite.chat.ChatNotification;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class NotificationCommand implements CommandExecutor {
+@CommandAlias("chatnotification|notification|chatping")
+@Description("Toggles the chat notifier on / off")
+public class NotificationCommand extends BaseCommand {
 
     private EpicSuite plugin;
 
@@ -15,23 +18,16 @@ public class NotificationCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player) {
-            final Player player =  (Player) sender;
-            final ChatNotification chatNotifier = plugin.getChatNotifier();
-
-            if (chatNotifier.isSubscriber(player.getUniqueId())) {
-                chatNotifier.removeSubscriber(player.getUniqueId());
-                player.sendMessage("§dDisabled chat notifications");
-            } else {
-                chatNotifier.addSubscriber(player.getUniqueId());
-                player.sendMessage("§dEnabled chat notifications");
-            }
-
+    @Default
+    public void onCommand(final Player player) {
+        final ChatNotification chatNotifier = plugin.getChatNotifier();
+        if (chatNotifier.isSubscriber(player.getUniqueId())) {
+            chatNotifier.removeSubscriber(player.getUniqueId());
+            player.sendMessage("§dDisabled chat notifications");
         } else {
-            sender.sendMessage("You must be a player to execute this command.");
+            chatNotifier.addSubscriber(player.getUniqueId());
+            player.sendMessage("§dEnabled chat notifications");
         }
-        return false;
     }
+
 }

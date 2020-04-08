@@ -1,20 +1,20 @@
 package de.stealwonders.epicsuite.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Default;
+import co.aikar.commands.annotation.Description;
+import co.aikar.commands.annotation.Optional;
 import org.bukkit.entity.Player;
 
-public class PingCommand implements CommandExecutor {
+@CommandAlias("ping")
+@Description("Displays your current server ping")
+public class PingCommand extends BaseCommand {
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        if (sender instanceof Player) {
-            final Player player = (Player) sender;
-            player.sendMessage("§dYour ping is " + player.spigot().getPing() + "ms");
-        } else {
-            sender.sendMessage("You must be a player to execute this command.");
-        }
-        return false;
+    @Default
+    public void onCommand(final Player player, @Optional final Player target) {
+        final String message = target != null ? "§dYour ping is " +  target.spigot().getPing() + "ms" : "§dYour ping is " +  player.spigot().getPing() + "ms";
+        player.sendMessage(message);
     }
+
 }

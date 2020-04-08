@@ -1,18 +1,20 @@
 package de.stealwonders.epicsuite.commands;
 
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Description;
 import de.stealwonders.epicsuite.EpicSuite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class DonatorMessageCommands implements CommandExecutor, Listener {
+@CommandPermission("epicsuite.donatormessage")
+public class DonatorMessageCommands extends BaseCommand implements Listener {
 
     private EpicSuite plugin;
 
@@ -20,63 +22,40 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
         this.plugin = plugin;
     }
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-        final Player player = (Player) sender;
-        if (player.hasPermission("epicsuite.donatormessage")) {
-
-            String message = null;
-            if (args.length >= 1) {
-                final StringBuilder stringBuilder = new StringBuilder();
-                for (final String arg : args) {
-                    stringBuilder.append(arg).append(" ");
-                }
-                message = stringBuilder.toString();
-            }
-
-                switch (label.toLowerCase()) {
-
-                    case "setjoinmessage":
-                        if (message != null) {
-                            if (message.contains(player.getName())) {
-                                plugin.getStorageFile().setPlayerJoinMessage(player, message);
-                                player.sendMessage("§dSet join message to: " + message);
-                            } else {
-                                player.sendMessage("§dJoin or leave messages must contain your name!");
-                            }
-                        } else {
-                            player.sendMessage("§dPlease specify a join message.");
-                        }
-                        break;
-
-                    case "setleavemessage":
-                        if (message != null) {
-                            if (message.contains(player.getName())) {
-                                plugin.getStorageFile().setPlayerLeaveMessage(player, message);
-                                player.sendMessage("§dSet leave message to: " + message);
-                            } else {
-                                player.sendMessage("§dJoin or leave messages must contain your name!");
-                            }
-                        } else {
-                            player.sendMessage("§dPlease specify a leave message.");
-                        }
-                        break;
-
-                    case "deljoinmessage":
-                        plugin.getStorageFile().deletePlayerJoinMessage(player);
-                        player.sendMessage("§dRemoved join message.");
-                        break;
-
-                    case "delleavemessage":
-                        plugin.getStorageFile().deletePlayerLeaveMessage(player);
-                        player.sendMessage("§dRemoved leave message.");
-                        break;
-                }
-
+    @CommandAlias("setjoinmessage")
+    @Description("Set your custom join message for when you join the server")
+    public void onSetJoinMessage(final Player player, final String message) {
+        if (message.contains(player.getName())) {
+            plugin.getStorageFile().setPlayerJoinMessage(player, message);
+            player.sendMessage("§dSet join message to: " + message);
         } else {
-            player.sendMessage("§dYou need to §5§ldonate §dto be able to use this feature. Use §5§l/buy §dfor more information.");
+            player.sendMessage("§dJoin or leave messages must contain your name!");
         }
-        return false;
+    }
+
+    @CommandAlias("deljoinmessage")
+    @Description("Delete your custom join message")
+    public void onDelJoinMessage(final Player player) {
+        plugin.getStorageFile().deletePlayerJoinMessage(player);
+        player.sendMessage("§dRemoved join message.");
+    }
+
+    @CommandAlias("setleavemessage")
+    @Description("Set your custom leave message for when you join the server")
+    public void onSetLeaveMessage(final Player player, final String message) {
+        if (message.contains(player.getName())) {
+            plugin.getStorageFile().setPlayerLeaveMessage(player, message);
+            player.sendMessage("§dSet leave message to: " + message);
+        } else {
+            player.sendMessage("§dJoin or leave messages must contain your name!");
+        }
+    }
+
+    @CommandAlias("delleavemessage")
+    @Description("Delete your custom leave message")
+    public void onDelLeaveMessage(final Player player) {
+        plugin.getStorageFile().deletePlayerLeaveMessage(player);
+        player.sendMessage("§dRemoved leave message.");
     }
 
     @EventHandler
@@ -104,4 +83,5 @@ public class DonatorMessageCommands implements CommandExecutor, Listener {
             }
         });
     }
+
 }

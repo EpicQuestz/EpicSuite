@@ -8,20 +8,4 @@ website: www.stealwonders.de
 softdepend: [LuckPerms]
 
 commands:
-  chatnotification:
-    description: Toggles the chat notifier on / off
-    aliases: [notification, chatping]
-  setjoinmessage:
-    description: Sets the join / leave message
-    aliases: [setleavemessage, deljoinmessage, delleavemessage]
-  ping:
-    description: Displays your current server ping
-  clearchat:
-    description: Clears the server chat
-    permission: epicsuite.clearchat
-  shrug:
-    description: Sends a schrug message
-    aliases: [tableflip, unflip, riot, lenny, sad, kawaii]
-  resourcepack:
-    description: Opens the resource pack download popup
-    aliases: [rp, texturepack]
+  # handled by the Aikar annotation command framework (ACF).
