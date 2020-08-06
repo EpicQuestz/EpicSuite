@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 @Description("Toggles the chat notifier on / off")
 public class NotificationCommand extends BaseCommand {
 
-    private EpicSuite plugin;
+    private final EpicSuite plugin;
 
     public NotificationCommand(final EpicSuite plugin) {
         this.plugin = plugin;

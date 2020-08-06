@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @CommandPermission("epicsuite.donatormessage")
 public class DonatorMessageCommands extends BaseCommand implements Listener {
 
-    private EpicSuite plugin;
+    private final EpicSuite plugin;
 
     public DonatorMessageCommands(final EpicSuite plugin) {
         this.plugin = plugin;

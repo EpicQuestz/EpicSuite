@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 
 public class TablistTeam {
 
-    private Group group;
+    private final Group group;
     private int priority;
     private ChatColor color;
 

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class SettingsFile {
 
-    private EpicSuite plugin;
+    private final EpicSuite plugin;
 
-    private File file;
+    private final File file;
     private FileConfiguration configuration;
 
     private static final String SORTABLE_GROUPS_PATH_ROOT = "groups";

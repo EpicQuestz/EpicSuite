@@ -20,16 +20,13 @@ import java.util.HashMap;
 
 public class TablistSorter implements Listener {
 
-    private EpicSuite plugin;
-    private LuckPerms luckPermsApi;
-    private Scoreboard scoreboard;
-    private HashMap<TablistTeam, Team> teams;
+    private final EpicSuite plugin;
+    private final Scoreboard scoreboard;
+    private final HashMap<TablistTeam, Team> teams = new HashMap<>();
 
     public TablistSorter(final EpicSuite plugin, final LuckPerms luckPermsApi) {
         this.plugin = plugin;
-        this.luckPermsApi = luckPermsApi;
-        scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        teams = new HashMap<>();
+        this.scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
         final EventBus eventBus = luckPermsApi.getEventBus();
         eventBus.subscribe(LogPublishEvent.class, event -> event.setCancelled(true));
@@ -58,32 +55,28 @@ public class TablistSorter implements Listener {
     }
 
     private void addPlayer(final Player player) {
-        if (teams != null) {
-            TablistTeam team = null;
-            for (final TablistTeam tablistTeam : teams.keySet()) {
+        TablistTeam team = null;
+        for (final TablistTeam tablistTeam : teams.keySet()) {
 
-                if (player.hasPermission("group." + tablistTeam.getGroup().getName())) {
-                    if (team != null) {
-                        if (team.getPriority() > tablistTeam.getPriority()) {
-                            team = tablistTeam;
-                        }
-                    } else {
+            if (player.hasPermission("group." + tablistTeam.getGroup().getName())) {
+                if (team != null) {
+                    if (team.getPriority() > tablistTeam.getPriority()) {
                         team = tablistTeam;
                     }
+                } else {
+                    team = tablistTeam;
                 }
             }
-            if (team != null) {
-                teams.get(team).addEntry(player.getName());
-            }
+        }
+        if (team != null) {
+            teams.get(team).addEntry(player.getName());
         }
     }
 
     private void removePlayer(final Player player) {
-        if (teams != null) {
-            for (final Team team : teams.values()) {
-                if (team.getEntries().contains(player.getName())) {
-                    team.removeEntry(player.getName());
-                }
+        for (final Team team : teams.values()) {
+            if (team.getEntries().contains(player.getName())) {
+                team.removeEntry(player.getName());
             }
         }
     }

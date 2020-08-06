@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 public class ChatHighlight implements Listener {
 
-    private LuckPerms luckPermsApi;
+    private final LuckPerms luckPermsApi;
 
     public ChatHighlight(final LuckPerms luckPermsApi) {
         this.luckPermsApi = luckPermsApi;

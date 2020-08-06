@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class ChatNotification implements Listener {
 
-    private EpicSuite plugin;
+    private final EpicSuite plugin;
 
     public ChatNotification(final EpicSuite plugin) {
         this.plugin = plugin;

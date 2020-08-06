@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 
 public class StorageFile {
 
-    private File file;
-    private FileConfiguration configuration;
+    private final File file;
+    private final FileConfiguration configuration;
 
-    private HashSet<UUID> subscribers = new HashSet<>();
+    private final HashSet<UUID> subscribers = new HashSet<>();
 
     private static final String SUBSCRIBER_PATH = "notifications.subscribers";
     private static final String JOINMESSAGE_PATH = "donator.joinmessage";
