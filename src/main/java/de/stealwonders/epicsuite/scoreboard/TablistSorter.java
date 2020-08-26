@@ -1,6 +1,7 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
+import de.stealwonders.epicsuite.events.ReloadConfigurationEvent;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.log.LogPublishEvent;
@@ -54,6 +55,13 @@ public class TablistSorter implements Listener {
         }
     }
 
+    private void onRankUpdate(final UserTrackEvent event) {
+        final Player player = Bukkit.getPlayer(event.getUser().getUniqueId());
+        if (player != null) {
+            updatePlayer(player);
+        }
+    }
+
     private void addPlayer(final Player player) {
         TablistTeam team = null;
         for (final TablistTeam tablistTeam : teams.keySet()) {
@@ -94,10 +102,6 @@ public class TablistSorter implements Listener {
         Bukkit.getOnlinePlayers().forEach(this::removePlayer);
     }
 
-    public HashMap<TablistTeam, Team> getTeams() {
-        return teams;
-    }
-
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
         addPlayer(event.getPlayer());
@@ -108,11 +112,9 @@ public class TablistSorter implements Listener {
         removePlayer(event.getPlayer());
     }
 
-    private void onRankUpdate(final UserTrackEvent event) {
-        final Player player = Bukkit.getPlayer(event.getUser().getUniqueId());
-        if (player != null) {
-            updatePlayer(player);
-        }
+    @EventHandler
+    public void onReload(final ReloadConfigurationEvent event) {
+        // todo
     }
 
 }

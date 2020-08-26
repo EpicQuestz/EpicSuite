@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 public class TablistTeam {
 
     private final Group group;
-    private int priority;
-    private ChatColor color;
+    private final int priority;
+    private final ChatColor color;
 
     public TablistTeam(final Group group, final int priority, final ChatColor color) {
         this.group = group;
