@@ -7,9 +7,13 @@
 # make sure to add an issue on the GitHub page for this plugin!
 # Issue Tracker: https://github.com/StealWonders/EpicSuite/issues
 
-resourcepack:
-  url: "https://downloads.epicquestz.com/files/ResourcePacks/EQPack_3.0.zip" # URL of the resource pack to download when using /rp
-  hash: "90E81B922E60EEB82844CF1568C468F1847954DB" # Resource pack file hash to verify that the downloaded file is the correct one
+resourcepacks:
+  legacy:
+    url: "https://downloads.epicquestz.com/files/ResourcePacks/EQPack_3.0.zip" # URL of the resource pack to download when using /rp
+    hash: "90E81B922E60EEB82844CF1568C468F1847954DB" # Resource pack file hash to verify that the downloaded file is the correct one
+  rohan:
+    url: "https://downloads.epicquestz.com/files/ResourcePacks/Rohan/EQPack_Rohan-0.3.zip"
+    hash: "f2cedb5a55239973b91ba26f4d1cd5025c23abf1"
 
 tablist:
   header: "\n §2Epic§4Questz\n§7Welcome to the server {player}.\n" # Header of the tablist

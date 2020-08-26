@@ -86,6 +86,14 @@ public class TablistSorter implements Listener {
         addPlayer(player);
     }
 
+    public void addPlayers() {
+        Bukkit.getOnlinePlayers().forEach(this::addPlayer);
+    }
+
+    public void removePlayers() {
+        Bukkit.getOnlinePlayers().forEach(this::removePlayer);
+    }
+
     public HashMap<TablistTeam, Team> getTeams() {
         return teams;
     }
