@@ -9,8 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 @CommandAlias("clearchat")
-@CommandPermission("epicsuite.clearchat")
 @Description("Clears the server chat")
+@CommandPermission("epicsuite.clearchat")
 public class ChatClearCommand extends BaseCommand {
 
     @Default
