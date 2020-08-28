@@ -123,7 +123,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         commandManager.registerCommand(new EmojiCommands());
         commandManager.registerCommand(new NotificationCommand(this));
         commandManager.registerCommand(new PingCommand());
-        commandManager.registerCommand(new ReloadCommand());
+        commandManager.registerCommand(new ReloadCommand(this));
         commandManager.registerCommand(resourcePackCommand);
     }
 
