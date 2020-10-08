@@ -1,6 +1,7 @@
 package de.stealwonders.epicsuite.tablist;
 
 import de.stealwonders.epicsuite.EpicSuite;
+import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,12 +10,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class TablistHandler implements Listener {
 
+    private final EpicSuite plugin;
     private String headerString;
     private String footerString;
 
     public TablistHandler(final EpicSuite plugin) {
-        headerString = plugin.getSettingsFile().getConfiguration().getString("tablist.header");
-        footerString = plugin.getSettingsFile().getConfiguration().getString("tablist.footer");
+        this.plugin = plugin;
+        loadTablist();
     }
 
     @EventHandler
@@ -25,4 +27,13 @@ public class TablistHandler implements Listener {
         player.setPlayerListHeaderFooter(header, footer);
     }
 
+    @EventHandler
+    public void onReload(final ConfigurationReloadEvent event) {
+        loadTablist();
+    }
+
+    private void loadTablist() {
+        headerString = plugin.getConfig().getString("tablist.header");
+        footerString = plugin.getConfig().getString("tablist.footer");
+    }
 }

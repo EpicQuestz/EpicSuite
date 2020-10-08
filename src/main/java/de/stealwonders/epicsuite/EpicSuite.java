@@ -14,7 +14,6 @@ import de.stealwonders.epicsuite.commands.ReloadCommand;
 import de.stealwonders.epicsuite.commands.ResourcePackCommand;
 import de.stealwonders.epicsuite.resourcepack.ResourcePack;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
-import de.stealwonders.epicsuite.storage.SettingsFile;
 import de.stealwonders.epicsuite.storage.StorageFile;
 import de.stealwonders.epicsuite.tablist.TablistHandler;
 import net.luckperms.api.LuckPerms;
@@ -24,7 +23,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,6 @@ public final class EpicSuite extends JavaPlugin implements Listener {
 
     private PaperCommandManager commandManager;
 
-    private SettingsFile settingsFile;
     private StorageFile storageFile;
 
     private ChatNotification chatNotification;
@@ -43,13 +40,14 @@ public final class EpicSuite extends JavaPlugin implements Listener {
     private DonatorMessageCommands donatorMessageCommands;
     private ResourcePackCommand resourcePackCommand;
 
+    private BroadcastTask broadcastTask;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
 
         commandManager = new PaperCommandManager(this);
 
-        settingsFile = new SettingsFile(this);
         storageFile = new StorageFile(this);
 
         chatNotification = new ChatNotification(this);
@@ -70,6 +68,8 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         donatorMessageCommands = new DonatorMessageCommands(this);
         resourcePackCommand = new ResourcePackCommand(this);
 
+        broadcastTask = new BroadcastTask(this);
+
         registerListeners();
         setupAutoBroadcast();
         registerCommandContexts();
@@ -88,6 +88,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
     }
 
     private void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(broadcastTask, this);
         this.getServer().getPluginManager().registerEvents(new ChatHighlight(luckPermsApi), this);
         this.getServer().getPluginManager().registerEvents(chatNotification, this);
         this.getServer().getPluginManager().registerEvents(donatorMessageCommands, this);
@@ -98,9 +99,8 @@ public final class EpicSuite extends JavaPlugin implements Listener {
     }
 
     private void setupAutoBroadcast() {
-        final long delay = this.getSettingsFile().getConfiguration().getLong("autobroadcast.delay");
-        final List<String> messages = this.getSettingsFile().getConfiguration().getStringList("autobroadcast.messages");
-        Bukkit.getServer().getScheduler().runTaskTimer(this, new BroadcastTask(messages), 0L, 20 * 60 * delay);
+        final long delay = this.getConfig().getLong("autobroadcast.delay");
+        Bukkit.getServer().getScheduler().runTaskTimer(this, broadcastTask, 0L, 20 * 60 * delay);
     }
 
     private void registerCommandContexts() {
@@ -142,10 +142,6 @@ public final class EpicSuite extends JavaPlugin implements Listener {
                 chatNotification.addSubscriber(UUID.fromString(string));
             }
         }
-    }
-
-    public SettingsFile getSettingsFile() {
-        return settingsFile;
     }
 
     public StorageFile getStorageFile() {

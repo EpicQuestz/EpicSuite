@@ -1,18 +1,25 @@
 package de.stealwonders.epicsuite.autobroadcast;
 
+import de.stealwonders.epicsuite.EpicSuite;
+import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 import java.util.List;
 
-public class BroadcastTask implements Runnable {
+public class BroadcastTask implements Runnable, Listener {
 
     private static final String PREFIX = color("&8[&4Epic&2Questz&8] &e");
-    private final List<String> messages;
+
+    private final EpicSuite plugin;
+    private List<String> messages;
     private int index;
 
-    public BroadcastTask(final List<String> messages) {
-        this.messages = messages;
+    public BroadcastTask(final EpicSuite plugin) {
+        this.plugin = plugin;
+        this.messages = plugin.getConfig().getStringList("autobroadcast.messages");
         this.index = 0;
     }
 
@@ -40,5 +47,11 @@ public class BroadcastTask implements Runnable {
 
     public static String color(final String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    @EventHandler
+    public void onConfigReload(final ConfigurationReloadEvent event) {
+        messages = plugin.getConfig().getStringList("autobroadcast.messages");
+        index = 0;
     }
 }

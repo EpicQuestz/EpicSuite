@@ -4,12 +4,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class ReloadConfigurationEvent extends Event {
+public class ConfigurationReloadEvent extends Event {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private final CommandSender commandSender;
 
-    public ReloadConfigurationEvent(final CommandSender commandSender) {
+    public ConfigurationReloadEvent(final CommandSender commandSender) {
         this.commandSender = commandSender;
     }
 

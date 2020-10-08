@@ -1,13 +1,15 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
-import de.stealwonders.epicsuite.events.ReloadConfigurationEvent;
+import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.log.LogPublishEvent;
 import net.luckperms.api.event.user.track.UserTrackEvent;
+import net.luckperms.api.model.group.Group;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,10 +18,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TablistSorter implements Listener {
+
+    private static final String SORTABLE_GROUPS_PATH_ROOT = "groups";
 
     private final EpicSuite plugin;
     private final Scoreboard scoreboard;
@@ -33,9 +38,8 @@ public class TablistSorter implements Listener {
         eventBus.subscribe(LogPublishEvent.class, event -> event.setCancelled(true));
         eventBus.subscribe(UserTrackEvent.class, this::onRankUpdate);
 
-        if (plugin.getSettingsFile().getSortableTeams() != null) {
-            init(plugin.getSettingsFile().getSortableTeams());
-        }
+        getSortableTeams();
+        init(getSortableTeams());
     }
 
     private void init(final ArrayList<TablistTeam> tablistTeams) {
@@ -53,6 +57,33 @@ public class TablistSorter implements Listener {
 
             plugin.getLogger().info("Registering group " + tablistTeam.getColor() + tablistTeam.getGroup().getName() + ChatColor.RESET + " ...");
         }
+    }
+
+    public @Nonnull ArrayList<TablistTeam> getSortableTeams() {
+        if (plugin.getConfig().isSet(SORTABLE_GROUPS_PATH_ROOT)) {
+
+            final ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection(SORTABLE_GROUPS_PATH_ROOT);
+
+            final ArrayList<TablistTeam> sortableTeams = new ArrayList<>();
+            if (configurationSection == null) return sortableTeams;
+
+            for (final String group : configurationSection.getKeys(false)) {
+
+                final String SORTABLE_GROUPS_PATH_PRIORITY = group + ".priority";
+                final String SORTABLE_GROUPS_PATH_COLOR =  group + ".color";
+
+                final int priority = configurationSection.isSet(SORTABLE_GROUPS_PATH_PRIORITY) ? configurationSection.getInt(SORTABLE_GROUPS_PATH_PRIORITY) : 0;
+                final ChatColor color = configurationSection.isSet(SORTABLE_GROUPS_PATH_COLOR) ? ChatColor.valueOf(configurationSection.getString(SORTABLE_GROUPS_PATH_COLOR)) : ChatColor.WHITE;
+
+                final Group luckGroup = plugin.getLuckPermsApi().getGroupManager().getGroup(group);
+                if (luckGroup != null) {
+                    final TablistTeam team = new TablistTeam(luckGroup, priority, color);
+                    sortableTeams.add(team);
+                }
+            }
+            return sortableTeams;
+        }
+        return new ArrayList<>();
     }
 
     private void onRankUpdate(final UserTrackEvent event) {
@@ -110,11 +141,6 @@ public class TablistSorter implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent event) {
         removePlayer(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onReload(final ReloadConfigurationEvent event) {
-        // todo
     }
 
 }

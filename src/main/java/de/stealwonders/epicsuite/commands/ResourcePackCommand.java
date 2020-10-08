@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import de.stealwonders.epicsuite.EpicSuite;
-import de.stealwonders.epicsuite.events.ReloadConfigurationEvent;
+import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
 import de.stealwonders.epicsuite.resourcepack.ResourcePack;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,13 +43,13 @@ public class ResourcePackCommand extends BaseCommand implements Listener {
     }
 
     @EventHandler
-    public void onReload(final ReloadConfigurationEvent event) {
+    public void onReload(final ConfigurationReloadEvent event) {
         resourcePacks.clear();
         loadResourcePacks();
     }
 
     private void loadResourcePacks() {
-        final Configuration configuration = plugin.getSettingsFile().getConfiguration();
+        final Configuration configuration = plugin.getConfig();
         if (configuration.isConfigurationSection(CONFIGURATION_ROOT)) {
             final ConfigurationSection configurationSection = configuration.getConfigurationSection(CONFIGURATION_ROOT);
             if (configurationSection != null) {

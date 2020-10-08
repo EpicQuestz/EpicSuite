@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import de.stealwonders.epicsuite.EpicSuite;
-import de.stealwonders.epicsuite.events.ReloadConfigurationEvent;
+import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
@@ -21,11 +21,11 @@ public class ReloadCommand extends BaseCommand {
     }
 
     @Subcommand("reloadconfig|reload")
-    @Description("Reload and applies configuration changes")
     @CommandPermission("epicsuite.reload")
+    @Description("Reload and applies configuration changes")
     public void onReloadConfig(final CommandSender commandSender) {
-        plugin.getSettingsFile().reload();
-        Bukkit.getPluginManager().callEvent(new ReloadConfigurationEvent(commandSender));
+        plugin.reloadConfig();
+        Bukkit.getPluginManager().callEvent(new ConfigurationReloadEvent(commandSender));
         commandSender.sendMessage("§dReloaded configuration.");
     }
 
