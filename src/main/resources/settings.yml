@@ -29,3 +29,10 @@ groups:
   default:
     priority: 3
     color: GRAY
+
+# Messages that shall be broadcasted automatically every x minutes.
+autobroadcast:
+  delay: 8
+  messages:
+    - 'Want to join our build team & help us build Lord of The Rings maps? Read this article on how to apply for builder at &bhttps://tinyurl.com/y9jl6lyj'
+    - 'Consider voting for our server to help us get new players! Use &b/vote'

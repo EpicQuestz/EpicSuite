@@ -2,6 +2,7 @@ package de.stealwonders.epicsuite;
 
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
+import de.stealwonders.epicsuite.autobroadcast.BroadcastTask;
 import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
 import de.stealwonders.epicsuite.commands.ChatClearCommand;
@@ -23,6 +24,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -69,6 +71,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         resourcePackCommand = new ResourcePackCommand(this);
 
         registerListeners();
+        setupAutoBroadcast();
         registerCommandContexts();
         registerCommandCompletions();
         registerCommands();
@@ -92,6 +95,12 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
         this.getServer().getPluginManager().registerEvents(new TablistHandler(this), this);
         this.getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    private void setupAutoBroadcast() {
+        final long delay = this.getSettingsFile().getConfiguration().getLong("autobroadcast.delay");
+        final List<String> messages = this.getSettingsFile().getConfiguration().getStringList("autobroadcast.messages");
+        Bukkit.getServer().getScheduler().runTaskTimer(this, new BroadcastTask(messages), 0L, 20 * 60 * delay);
     }
 
     private void registerCommandContexts() {
