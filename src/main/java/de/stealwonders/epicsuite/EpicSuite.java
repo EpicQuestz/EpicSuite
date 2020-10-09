@@ -12,6 +12,7 @@ import de.stealwonders.epicsuite.commands.NotificationCommand;
 import de.stealwonders.epicsuite.commands.PingCommand;
 import de.stealwonders.epicsuite.commands.ReloadCommand;
 import de.stealwonders.epicsuite.commands.ResourcePackCommand;
+import de.stealwonders.epicsuite.commands.VoteCommand;
 import de.stealwonders.epicsuite.resourcepack.ResourcePack;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.StorageFile;
@@ -134,6 +135,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         commandManager.registerCommand(new PingCommand());
         commandManager.registerCommand(new ReloadCommand(this));
         commandManager.registerCommand(resourcePackCommand);
+        commandManager.registerCommand(new VoteCommand(this));
     }
 
     private void fetchNotficationSubscribers() {
