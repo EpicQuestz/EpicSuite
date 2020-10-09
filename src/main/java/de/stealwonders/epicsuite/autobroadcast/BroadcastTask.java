@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BroadcastTask implements Runnable, Listener {
 
-    private static final String PREFIX = color("&8[&4Epic&2Questz&8] &e");
+    private static final String PREFIX = color("&8[&4Epic&2Questz&8] &a");
 
     private final EpicSuite plugin;
     private List<String> messages;
@@ -27,7 +27,9 @@ public class BroadcastTask implements Runnable, Listener {
     public void run() {
         if (messages.size() >= 1) {
             if (Bukkit.getOnlinePlayers().size() >= 1) {
+                Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage(PREFIX + color(messages.get(index)));
+                Bukkit.broadcastMessage("");
                 if (index >= messages.size() - 1) {
                     index = 0;
                 } else {
