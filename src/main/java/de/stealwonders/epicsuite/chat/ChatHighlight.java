@@ -2,9 +2,8 @@ package de.stealwonders.epicsuite.chat;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.context.ContextManager;
 import net.luckperms.api.model.group.Group;
-import net.luckperms.api.model.user.User;
+import net.luckperms.api.query.QueryMode;
 import net.luckperms.api.query.QueryOptions;
 import net.luckperms.api.track.Track;
 import org.bukkit.Bukkit;
@@ -15,6 +14,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,8 +96,8 @@ public class ChatHighlight implements Listener {
     }
 
     private boolean isLink(final String string) {
-        final String regex = "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
-        final Pattern pattern = Pattern.compile(regex);
+        // old pattern : https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+        final Pattern pattern = Pattern.compile("(?:(https?)://)?([-\\w_.]+\\.\\w{2,})(/\\S*)?");
         final Matcher matcher = pattern.matcher(string);
         return matcher.find();
     }
@@ -103,8 +105,9 @@ public class ChatHighlight implements Listener {
     private Group getGroup(final Player player) {
         final Track track = luckPermsApi.getTrackManager().getTrack("default");
         if (track != null) {
-            final User user = luckPermsApi.getUserManager().getUser(player.getUniqueId());
-            for (final String groupName : track.getGroups()) {
+            final List<String> groups = new ArrayList<>(track.getGroups());
+            Collections.reverse(groups);
+            for (final String groupName : groups) {
                 final Group group = luckPermsApi.getGroupManager().getGroup(groupName);
                 if (player.hasPermission("group." + groupName)) {
                     return group;
@@ -115,8 +118,7 @@ public class ChatHighlight implements Listener {
     }
 
     private String getSuffix(final Group group) {
-        final ContextManager contextManager = luckPermsApi.getContextManager();
-        final QueryOptions queryOptions = contextManager.getQueryOptions(group);
+        final QueryOptions queryOptions = QueryOptions.builder(QueryMode.CONTEXTUAL).build();
         final CachedMetaData metaData = group.getCachedData().getMetaData(queryOptions);
         return metaData.getSuffix();
     }
