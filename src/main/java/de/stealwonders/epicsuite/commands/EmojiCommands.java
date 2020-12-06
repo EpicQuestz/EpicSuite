@@ -8,7 +8,7 @@ import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CommandAlias("emote")
+@CommandAlias("emote|emotes|emoji|emojis")
 @CommandPermission("epicsuite.chat.emojis")
 public class EmojiCommands extends BaseCommand {
 
