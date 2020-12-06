@@ -20,7 +20,7 @@ public class ChatNotification implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onChat(final AsyncPlayerChatEvent event) {
         for (final Player player : Bukkit.getOnlinePlayers()) {
             if (event.getPlayer() != player) {

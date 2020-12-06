@@ -14,7 +14,7 @@ public class BroadcastTask implements Runnable, Listener {
     private static final String PREFIX = color("&8[&4Epic&2Questz&8] &a");
 
     private final EpicSuite plugin;
-    private List<String> messages;
+    private final List<String> messages;
     private int index;
 
     public BroadcastTask(final EpicSuite plugin) {
@@ -25,16 +25,14 @@ public class BroadcastTask implements Runnable, Listener {
 
     @Override
     public void run() {
-        if (messages.size() >= 1) {
-            if (Bukkit.getOnlinePlayers().size() >= 1) {
-                Bukkit.broadcastMessage("");
-                Bukkit.broadcastMessage(PREFIX + color(messages.get(index)));
-                Bukkit.broadcastMessage("");
-                if (index >= messages.size() - 1) {
-                    index = 0;
-                } else {
-                    index++;
-                }
+        if (messages.size() >= 1 && Bukkit.getOnlinePlayers().size() >= 1) {
+            Bukkit.broadcastMessage("");
+            Bukkit.broadcastMessage(PREFIX + color(messages.get(index)));
+            Bukkit.broadcastMessage("");
+            if (index >= messages.size() - 1) {
+                index = 0;
+            } else {
+                index++;
             }
         }
     }
@@ -53,7 +51,8 @@ public class BroadcastTask implements Runnable, Listener {
 
     @EventHandler
     public void onConfigReload(final ConfigurationReloadEvent event) {
-        messages = plugin.getConfig().getStringList("autobroadcast.messages");
+        messages.clear();
+        messages.addAll(plugin.getConfig().getStringList("autobroadcast.messages"));
         index = 0;
     }
 }

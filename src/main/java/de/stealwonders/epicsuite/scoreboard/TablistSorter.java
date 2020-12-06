@@ -1,7 +1,6 @@
 package de.stealwonders.epicsuite.scoreboard;
 
 import de.stealwonders.epicsuite.EpicSuite;
-import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.log.LogPublishEvent;

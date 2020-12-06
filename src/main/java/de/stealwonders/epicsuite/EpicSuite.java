@@ -122,7 +122,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
     }
 
     private void registerCommandCompletions() {
-        commandManager.getCommandCompletions().registerAsyncCompletion("resourcepack", c ->
+        commandManager.getCommandCompletions().registerAsyncCompletion("resourcepack", context ->
             resourcePackCommand.getResourcePacks().stream().map(ResourcePack::getKey).collect(Collectors.toList())
         );
     }

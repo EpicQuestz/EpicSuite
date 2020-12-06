@@ -21,9 +21,7 @@ public class VoteCommand extends BaseCommand {
     public void onCommand(final CommandSender commandSender) {
         commandSender.sendMessage("");
         commandSender.sendMessage("§e§lVote for EpicQuestz at:");
-        plugin.getConfig().getStringList("votelinks").forEach(voteLink -> {
-            commandSender.sendMessage("§8 ✹ §b" + voteLink);
-        });
+        plugin.getConfig().getStringList("votelinks").forEach(voteLink -> commandSender.sendMessage("§8 ✹ §b" + voteLink));
         commandSender.sendMessage("");
     }
 
