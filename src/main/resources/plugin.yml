@@ -3,7 +3,7 @@ version: @version@
 api-version: 1.13
 main: de.stealwonders.epicsuite.EpicSuite
 authors: [StealWonders]
-description: An essential suite of features for the EpicQuestz server.
+description: An essential suite of commands & features for the EpicQuestz server.
 website: www.stealwonders.de
 softdepend: [LuckPerms]
 
