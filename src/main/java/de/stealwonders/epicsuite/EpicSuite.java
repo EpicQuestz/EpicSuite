@@ -17,6 +17,7 @@ import de.stealwonders.epicsuite.resourcepack.ResourcePack;
 import de.stealwonders.epicsuite.scoreboard.TablistSorter;
 import de.stealwonders.epicsuite.storage.StorageFile;
 import de.stealwonders.epicsuite.tablist.TablistHandler;
+import de.stealwonders.epicsuite.vote.VoteListener;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -96,6 +97,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(resourcePackCommand, this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
         this.getServer().getPluginManager().registerEvents(new TablistHandler(this), this);
+        this.getServer().getPluginManager().registerEvents(new VoteListener(), this);
         this.getServer().getPluginManager().registerEvents(this, this);
     }
 

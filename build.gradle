@@ -10,13 +10,15 @@ version = pluginVersion
 
 repositories {
     mavenCentral()
-    maven { url = 'https://repo.destroystokyo.com/repository/maven-public/' }
-    maven { url = "https://repo.aikar.co/content/groups/aikar/" }
+    maven { url = 'https://repo.destroystokyo.com/repository/maven-public/' } // Paper
+    maven { url = "https://repo.aikar.co/content/groups/aikar/" } // ACF
+    maven { url = 'https://dl.bintray.com/ichbinjoe/public/' } // NuVotifier
 }
 
 dependencies {
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT'
-    compileOnly 'net.luckperms:api:5.2'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'com.vexsoftware:nuvotifier-universal:2.6.0'
+    compileOnly 'net.luckperms:api:5.3'
     compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
 }
 
