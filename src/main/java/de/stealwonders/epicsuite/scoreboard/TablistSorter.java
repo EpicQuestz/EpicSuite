@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -58,7 +57,7 @@ public class TablistSorter implements Listener {
         }
     }
 
-    public @Nonnull ArrayList<TablistTeam> getSortableTeams() {
+    public ArrayList<TablistTeam> getSortableTeams() {
         if (plugin.getConfig().isSet(SORTABLE_GROUPS_PATH_ROOT)) {
 
             final ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection(SORTABLE_GROUPS_PATH_ROOT);

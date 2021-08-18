@@ -1,39 +1,30 @@
 package de.stealwonders.epicsuite.tablist;
 
-import de.stealwonders.epicsuite.EpicSuite;
-import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class TablistHandler implements Listener {
+public record TablistHandler(FileConfiguration config) implements Listener {
 
-    private final EpicSuite plugin;
-    private String headerString;
-    private String footerString;
-
-    public TablistHandler(final EpicSuite plugin) {
-        this.plugin = plugin;
-        loadTablist();
-    }
+    private static final String HEADER_PATH = "tablist.header";
+    private static final String FOOTER_PATH = "tablist.footer";
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        final TextComponent header = new TextComponent(headerString.replaceAll("\\{player}", event.getPlayer().getName()));
-        final TextComponent footer = new TextComponent(footerString.replaceAll("\\{player}", event.getPlayer().getName()));
-        player.setPlayerListHeaderFooter(header, footer);
+
+        final String headerString = config.getString(HEADER_PATH);
+        final String footerString = config.getString(FOOTER_PATH);
+
+        final Component header = headerString != null ? LegacyComponentSerializer.legacyAmpersand().deserialize(headerString.replaceAll("\\{player}", player.getName())) : null;
+        final Component footer = footerString != null ? LegacyComponentSerializer.legacyAmpersand().deserialize(footerString.replaceAll("\\{player}", player.getName())) : null;
+
+        if (header != null) player.sendPlayerListHeader(header);
+        if (footer != null) player.sendPlayerListFooter(footer);
     }
 
-    @EventHandler
-    public void onReload(final ConfigurationReloadEvent event) {
-        loadTablist();
-    }
-
-    private void loadTablist() {
-        headerString = plugin.getConfig().getString("tablist.header");
-        footerString = plugin.getConfig().getString("tablist.footer");
-    }
 }

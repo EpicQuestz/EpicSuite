@@ -11,7 +11,7 @@ public class VoteListener implements Listener {
 
     @EventHandler
     public void onVote(final VotifierEvent event) {
-        Player player = Bukkit.getPlayer(event.getVote().getUsername());
+        final Player player = Bukkit.getPlayer(event.getVote().getUsername());
         if (player != null) {
             player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1, 1);
         }

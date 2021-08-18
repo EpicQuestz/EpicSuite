@@ -67,10 +67,10 @@ public final class EpicSuite extends JavaPlugin implements Listener {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
-        donatorMessageCommands = new DonatorMessageCommands(this);
+        donatorMessageCommands = new DonatorMessageCommands(getStorageFile());
         resourcePackCommand = new ResourcePackCommand(this);
 
-        broadcastTask = new BroadcastTask(this);
+        broadcastTask = new BroadcastTask(getConfig());
 
         registerListeners();
         setupAutoBroadcast();
@@ -96,7 +96,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(donatorMessageCommands, this);
         this.getServer().getPluginManager().registerEvents(resourcePackCommand, this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
-        this.getServer().getPluginManager().registerEvents(new TablistHandler(this), this);
+        this.getServer().getPluginManager().registerEvents(new TablistHandler(getConfig()), this);
         this.getServer().getPluginManager().registerEvents(new VoteListener(), this);
         this.getServer().getPluginManager().registerEvents(this, this);
     }
@@ -137,7 +137,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         commandManager.registerCommand(new PingCommand());
         commandManager.registerCommand(new ReloadCommand(this));
         commandManager.registerCommand(resourcePackCommand);
-        commandManager.registerCommand(new VoteCommand(this));
+        commandManager.registerCommand(new VoteCommand(getConfig()));
     }
 
     private void fetchNotficationSubscribers() {

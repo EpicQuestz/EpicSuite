@@ -16,8 +16,8 @@ resourcepacks:
     hash: "f2cedb5a55239973b91ba26f4d1cd5025c23abf1"
 
 tablist:
-  header: "\n §2Epic§4Questz\n§7Welcome to the server {player}.\n" # Header of the tablist
-  footer: "\n   §7Visit our website at www.epicquestz.com   \n " # Footer of the tablist
+  header: "\n &2Epic&4Questz\n&7Welcome to the server {player}.\n" # Header of the tablist
+  footer: "\n   &7Visit our website at www.epicquestz.com   \n " # Footer of the tablist
 
 groups:
   creator:

@@ -1,5 +1,5 @@
 name: EpicSuite
-version: @version@
+version: '$version'
 api-version: 1.13
 main: de.stealwonders.epicsuite.EpicSuite
 authors: [StealWonders]
