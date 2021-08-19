@@ -40,3 +40,27 @@ autobroadcast:
 votelinks:
   - "https://www.planetminecraft.com/server/epicquestz/vote/"
   - "https://minecraft-mp.com/server/270218/vote/"
+
+perks:
+  Iron:
+    pricing: "10€"
+    perks:
+      - "Receive in-game 'emote' commands"
+      - "[Donor] tag on discord"
+  Gold:
+    pricing: "25€"
+    perks:
+      - "Access to custom join & leave messages"
+  Emerald:
+    pricing: "40€"
+    perks:
+      - "Access to the /tptoggle command to prevent other users from teleporting to you"
+  Diamond:
+    pricing: "55€"
+    perks:
+      - "Access to the via Discord bridged server chat"
+  Obsidian:
+    pricing: "70€+"
+    perks:
+      - "Special mention on Website & Discord"
+      - "Ability to change your nickname"

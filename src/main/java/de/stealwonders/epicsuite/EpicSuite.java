@@ -9,6 +9,7 @@ import de.stealwonders.epicsuite.commands.ChatClearCommand;
 import de.stealwonders.epicsuite.commands.DonatorMessageCommands;
 import de.stealwonders.epicsuite.commands.EmojiCommands;
 import de.stealwonders.epicsuite.commands.NotificationCommand;
+import de.stealwonders.epicsuite.commands.PerksCommand;
 import de.stealwonders.epicsuite.commands.PingCommand;
 import de.stealwonders.epicsuite.commands.ReloadCommand;
 import de.stealwonders.epicsuite.commands.ResourcePackCommand;
@@ -134,10 +135,11 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         commandManager.registerCommand(donatorMessageCommands);
         commandManager.registerCommand(new EmojiCommands());
         commandManager.registerCommand(new NotificationCommand(this));
+        commandManager.registerCommand(new PerksCommand(this));
         commandManager.registerCommand(new PingCommand());
         commandManager.registerCommand(new ReloadCommand(this));
         commandManager.registerCommand(resourcePackCommand);
-        commandManager.registerCommand(new VoteCommand(getConfig()));
+        commandManager.registerCommand(new VoteCommand(this));
     }
 
     private void fetchNotficationSubscribers() {
@@ -146,6 +148,10 @@ public final class EpicSuite extends JavaPlugin implements Listener {
                 chatNotification.addSubscriber(UUID.fromString(string));
             }
         }
+    }
+
+    public PaperCommandManager getCommandManager() {
+        return commandManager;
     }
 
     public StorageFile getStorageFile() {
