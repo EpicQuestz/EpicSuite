@@ -5,7 +5,7 @@ An essential suite of commands & features for the EpicQuestz server.
 EpicSuite uses Gradle to handle dependencies & building.
 
 #### Requirements
-* Java 11 JDK or newer
+* Java 16 JDK or newer
 * Git
 
 #### Compiling from source
