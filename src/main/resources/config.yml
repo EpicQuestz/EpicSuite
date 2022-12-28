@@ -41,6 +41,8 @@ votelinks:
   - "https://www.planetminecraft.com/server/epicquestz/vote/"
   - "https://minecraft-mp.com/server/270218/vote/"
 
+donationurl: "https://ko-fi.com/epicquestz"
+
 perks:
   Iron:
     pricing: "10€"

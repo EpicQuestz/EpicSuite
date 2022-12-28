@@ -6,6 +6,7 @@ import de.stealwonders.epicsuite.autobroadcast.BroadcastTask;
 import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
 import de.stealwonders.epicsuite.commands.ChatClearCommand;
+import de.stealwonders.epicsuite.commands.DonateCommand;
 import de.stealwonders.epicsuite.commands.DonatorMessageCommands;
 import de.stealwonders.epicsuite.commands.EmojiCommands;
 import de.stealwonders.epicsuite.commands.NotificationCommand;
@@ -132,6 +133,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
 
     private void registerCommands() {
         commandManager.registerCommand(new ChatClearCommand());
+        commandManager.registerCommand(new DonateCommand(this));
         commandManager.registerCommand(donatorMessageCommands);
         commandManager.registerCommand(new EmojiCommands());
         commandManager.registerCommand(new NotificationCommand(this));
