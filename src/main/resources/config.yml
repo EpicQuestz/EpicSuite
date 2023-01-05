@@ -15,6 +15,10 @@ resourcepacks:
     url: "https://downloads.epicquestz.com/files/ResourcePacks/Rohan/EQPack_Rohan-0.3.zip"
     hash: "f2cedb5a55239973b91ba26f4d1cd5025c23abf1"
 
+packupdate:
+  enabled: true # Allow console to automatically update resource packs
+  baseurl: "https://downloads.epicquestz.com/files/ResourcePacks/autouploaded" # Base URL of the resource pack directory
+
 tablist:
   header: "\n &2Epic&4Questz\n&7Welcome to the server {player}.\n" # Header of the tablist
   footer: "\n   &7Visit our website at www.epicquestz.com   \n " # Footer of the tablist
