@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import de.stealwonders.epicsuite.EpicSuite;
 import de.stealwonders.epicsuite.events.ConfigurationReloadEvent;
+import de.stealwonders.epicsuite.resourcepack.PackTracker;
 import de.stealwonders.epicsuite.resourcepack.ResourcePack;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,6 +36,7 @@ public class ResourcePackCommand extends BaseCommand implements Listener {
     @CommandCompletion("@resourcepack")
     public void onCommand(final Player player, final ResourcePack resourcePack) {
         player.setResourcePack(resourcePack.getUrl(), resourcePack.getHash());
+        PackTracker.setLatestPack(player.getUniqueId(), resourcePack.getHash());
         player.sendMessage("§dPrompting resource pack download... If you don't see one make sure to enable server resource packs in your server list.");
     }
 
