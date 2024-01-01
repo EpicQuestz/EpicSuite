@@ -103,8 +103,17 @@ public final class EpicSuite extends JavaPlugin implements Listener {
         this.getServer().getPluginManager().registerEvents(new PackTracker(), this);
         this.getServer().getPluginManager().registerEvents(tablistSorter, this);
         this.getServer().getPluginManager().registerEvents(new TablistHandler(getConfig()), this);
-        this.getServer().getPluginManager().registerEvents(new VoteListener(), this);
-        this.getServer().getPluginManager().registerEvents(this, this);
+        registerVoteListener();
+//        this.getServer().getPluginManager().registerEvents(this, this);  // hope this isn't needed
+    }
+
+    private void registerVoteListener() {
+        final Plugin votifier = getServer().getPluginManager().getPlugin("Votifier");
+        if (votifier != null) {
+            this.getServer().getPluginManager().registerEvents(new VoteListener(), this);
+        } else {
+            Bukkit.getLogger().warning("Votifier not found! Cannot listen for voting events.");
+        }
     }
 
     private void setupAutoBroadcast() {

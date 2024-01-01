@@ -5,7 +5,7 @@ main: de.stealwonders.epicsuite.EpicSuite
 authors: [StealWonders]
 description: An essential suite of commands & features for the EpicQuestz server.
 website: www.stealwonders.de
-softdepend: [LuckPerms]
+softdepend: [LuckPerms, Votifier]
 
 commands:
   # handled by the Aikar annotation command framework (ACF).
