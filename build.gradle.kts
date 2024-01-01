@@ -1,19 +1,20 @@
 plugins {
     id("java-library")
-    id("com.github.johnrengelman.shadow") version("7.0.0")
+    id("com.github.johnrengelman.shadow") version("8.1.1")
 }
 
-java.targetCompatibility = JavaVersion.VERSION_16
-java.sourceCompatibility = JavaVersion.VERSION_16
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
 
 val pluginGroup: String by extra
 val pluginVersion: String by extra
 
-val acfVersion = "0.5.0-SNAPSHOT"
-val cfVersion = "3.15.0"
-val paperVersion = "1.17.1-R0.1-SNAPSHOT"
+val acfVersion = "0.5.1-SNAPSHOT"
+val cfVersion = "3.42.0"
+val paperVersion = "1.20.4-R0.1-SNAPSHOT"
 val votifierVersion = "nuvotifier-2.7.3"
-val luckpermsVersion = "5.3"
+val luckpermsVersion = "5.4"
 
 group = pluginGroup
 version = pluginVersion
@@ -43,7 +44,7 @@ tasks.build {
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    options.release.set(16)
+    options.release.set(17)
 }
 
 tasks.processResources {
