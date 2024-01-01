@@ -5,6 +5,7 @@ import co.aikar.commands.PaperCommandManager;
 import de.stealwonders.epicsuite.autobroadcast.BroadcastTask;
 import de.stealwonders.epicsuite.chat.ChatHighlight;
 import de.stealwonders.epicsuite.chat.ChatNotification;
+import de.stealwonders.epicsuite.commands.ApplyCommand;
 import de.stealwonders.epicsuite.commands.ChatClearCommand;
 import de.stealwonders.epicsuite.commands.DonateCommand;
 import de.stealwonders.epicsuite.commands.DonatorMessageCommands;
@@ -135,6 +136,7 @@ public final class EpicSuite extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
+        commandManager.registerCommand(new ApplyCommand(this));
         commandManager.registerCommand(new ChatClearCommand());
         commandManager.registerCommand(new DonateCommand(this));
         commandManager.registerCommand(donatorMessageCommands);
